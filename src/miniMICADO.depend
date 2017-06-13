@@ -1,0 +1,118 @@
+# depslib dependency file v1.0
+1494582582 source:c:\users\lueckhof\desktop\minimicado\src\aerodynamics.cpp
+	"Aerodynamics.h"
+
+1493714181 c:\users\lueckhof\desktop\minimicado\src\aerodynamics.h
+	<string>
+	<iostream>
+	<vector>
+	<fstream>
+	<cstdlib>
+	<sstream>
+	"tgmath.h"
+	"atmosphere.h"
+
+1491216958 source:c:\users\lueckhof\desktop\minimicado\src\massestimation.cpp
+	"MassEstimation.h"
+
+1491216853 c:\users\lueckhof\desktop\minimicado\src\massestimation.h
+
+1495461689 source:c:\users\lueckhof\desktop\minimicado\src\main.cpp
+	<iostream>
+	<fstream>
+	"runtimeInfo.h"
+	"node.h"
+	"MissionAnalysis.h"
+	"Segment.h"
+	"Propeller.h"
+	"BladeElementTheory.h"
+
+1493037428 c:\users\lueckhof\desktop\minimicado\src\lib\standardfiles\runtimeinfo.h
+	<fstream>
+	<string>
+	<iomanip>
+	"node.h"
+	"time.h"
+
+1493210676 c:\users\lueckhof\desktop\minimicado\src\lib\aixml\node.h
+	<string>
+	<vector>
+	<map>
+	<limits>
+	<iostream>
+	<queue>
+	"tinyxml.h"
+	<sstream>
+
+1489141091 c:\users\lueckhof\desktop\minimicado\src\lib\aixml\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1489141091 c:\users\lueckhof\desktop\minimicado\src\lib\aixml\tinystr.h
+	<assert.h>
+	<string.h>
+
+1495195238 c:\users\lueckhof\desktop\minimicado\src\missionanalysis.h
+	<vector>
+	"node.h"
+	"functions.h"
+	"Segment.h"
+
+1493037428 c:\users\lueckhof\desktop\minimicado\src\lib\standardfiles\functions.h
+	<iostream>
+	<sstream>
+	<stdio.h>
+	<conio.h>
+	<algorithm>
+	<windows.h>
+	<string>
+	<math.h>
+	<sys/stat.h>
+	<tchar.h>
+	<ctype.h>
+	"runtimeInfo.h"
+
+1495197522 source:c:\users\lueckhof\desktop\minimicado\src\missionanalysis.cpp
+	"MissionAnalysis.h"
+
+1484740260 c:\users\lueckhof\desktop\minimicado\src\lib\atmosphere\atmosphere.h
+	<iostream>
+	<string>
+	<math.h>
+
+1495460848 source:c:\users\lueckhof\desktop\minimicado\src\bladeelementtheory.cpp
+	"BladeElementTheory.h"
+
+1495457847 c:\users\lueckhof\desktop\minimicado\src\bladeelementtheory.h
+	<math.h>
+	"functions.h"
+	"atmosphere.h"
+	"Propeller.h"
+
+1495624123 c:\users\lueckhof\desktop\minimicado\src\segment.h
+	<math.h>
+	<vector>
+	"node.h"
+	"functions.h"
+
+1495624171 source:c:\users\lueckhof\desktop\minimicado\src\segment.cpp
+	"Segment.h"
+
+1495455481 c:\users\lueckhof\desktop\minimicado\src\propeller.h
+	<string>
+	<iostream>
+	<vector>
+	<math.h>
+	"node.h"
+	"functions.h"
+
+1495456936 source:c:\users\lueckhof\desktop\minimicado\src\propeller.cpp
+	"Propeller.h"
+
