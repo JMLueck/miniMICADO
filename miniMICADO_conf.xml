@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ConfigFile Name="miniMICADO_conf.xml">
+     <ControlSettings Desc="allgemeine Steuereinstellungen">
+        <IODir>..\projekte\</IODir>
+		<ConsoleOutputOn>1</ConsoleOutputOn>
+        <LogfileOutputOn>1</LogfileOutputOn>
+		<LogFile>miniMICADO.log</LogFile>
+    </ControlSettings>
+    <GeometrySettings Desc="Geometrieeinstellungen">
+		<NumberOfRotors>1</NumberOfRotors>
+		<RotorDiameter Desc="in m">2</RotorDiameter>
+		<NumberOfBlades>3</NumberOfBlades>
+		<MACofBlades Desc="in m">0.25</MACofBlades>
+	</GeometrySettings>
+	<MassSettings>
+		<Payload Desc="in kg">5</Payload>
+	</MassSettings>
+	<PowertrainSettings>
+		<EnergyDensity Desc="in kWh/kg">0.183</EnergyDensity>
+		<PowerDensity Desc="in kW/kg">2.758</PowerDensity> 
+	</PowertrainSettings>
+	<DesignMissionSettings> 
+		<IterationTimeStep Desc="in sec">1</IterationTimeStep>
+		<Segments>
+			<NumberOfSegments>5</NumberOfSegments>
+			<Segment ID="1">
+				<HorizontalAcceleration Desc="in m/s^2">0</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">0</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">0</HorizontalDistance>
+				<VerticalDistance Desc="in m">60</VerticalDistance>
+			</Segment>
+			<Segment ID="2">
+				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">20</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">400</HorizontalDistance>
+				<VerticalDistance Desc="in m">40</VerticalDistance>
+			</Segment>
+			<Segment ID="3">
+				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">0</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">40</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">0</VerticalSpeed>
+				<HorizontalDistance Desc="in m">2200</HorizontalDistance>
+				<VerticalDistance Desc="in m">0</VerticalDistance>
+			</Segment>
+			<Segment ID="4">
+				<HorizontalAcceleration Desc="in m/s^2">2</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">20</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">-3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">400</HorizontalDistance>
+				<VerticalDistance Desc="in m">40</VerticalDistance>
+			</Segment>
+			<Segment ID="5">
+				<HorizontalAcceleration Desc="in m/s^2">0</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">0</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">-3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">0</HorizontalDistance>
+				<VerticalDistance Desc="in m">60</VerticalDistance>
+			</Segment>
+		</Segments>
+	</DesignMissionSettings>
+</ConfigFile>
