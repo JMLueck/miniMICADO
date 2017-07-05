@@ -20,26 +20,42 @@
 		<PowerDensity Desc="in kW/kg">2.758</PowerDensity> 
 	</PowertrainSettings>
 	<DesignMissionSettings> 
-		<IterationTimeStep Desc="in sec">1</IterationTimeStep>
+		<IterationTimeFactor Desc="in sec">100</IterationTimeFactor>
 		<Segments>
-			<NumberOfSegments>5</NumberOfSegments>
+			<NumberOfSegments>15</NumberOfSegments>
 			<Segment ID="1">
+				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">20</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">1000</HorizontalDistance>
+				<VerticalDistance Desc="in m">200</VerticalDistance>
+			</Segment>
+			<Segment ID="2">
 				<HorizontalAcceleration Desc="in m/s^2">0</HorizontalAcceleration>
 				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
 				<HorizontalSpeed Desc="in m/s">0</HorizontalSpeed>
 				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
 				<HorizontalDistance Desc="in m">0</HorizontalDistance>
-				<VerticalDistance Desc="in m">60</VerticalDistance>
+				<VerticalDistance Desc="in m">100</VerticalDistance>
 			</Segment>
-			<Segment ID="2">
+			<Segment ID="3">
 				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
 				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
 				<HorizontalSpeed Desc="in m/s">20</HorizontalSpeed>
 				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
-				<HorizontalDistance Desc="in m">400</HorizontalDistance>
-				<VerticalDistance Desc="in m">40</VerticalDistance>
+				<HorizontalDistance Desc="in m">1000</HorizontalDistance>
+				<VerticalDistance Desc="in m">200</VerticalDistance>
 			</Segment>
-			<Segment ID="3">
+			<Segment ID="4">
+				<HorizontalAcceleration Desc="in m/s^2">0</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">0</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">0</HorizontalDistance>
+				<VerticalDistance Desc="in m">100</VerticalDistance>
+			</Segment>
+			<Segment ID="5">
 				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
 				<VerticalAcceleration Desc="in m/s^2">0</VerticalAcceleration>
 				<HorizontalSpeed Desc="in m/s">40</HorizontalSpeed>
@@ -47,21 +63,86 @@
 				<HorizontalDistance Desc="in m">2200</HorizontalDistance>
 				<VerticalDistance Desc="in m">0</VerticalDistance>
 			</Segment>
-			<Segment ID="4">
-				<HorizontalAcceleration Desc="in m/s^2">2</HorizontalAcceleration>
+			<Segment ID="6">
+				<HorizontalAcceleration Desc="in m/s^2">0</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">0</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">0</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">0</VerticalSpeed>
+				<HorizontalDistance Desc="in m">0</HorizontalDistance>
+				<VerticalDistance Desc="in m">0</VerticalDistance>
+				<HoverTime Desc="in s">100</HoverTime>
+			</Segment>
+			<Segment ID="7">
+				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
 				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
 				<HorizontalSpeed Desc="in m/s">20</HorizontalSpeed>
 				<VerticalSpeed Desc="in m/s">-3</VerticalSpeed>
-				<HorizontalDistance Desc="in m">400</HorizontalDistance>
-				<VerticalDistance Desc="in m">40</VerticalDistance>
+				<HorizontalDistance Desc="in m">1000</HorizontalDistance>
+				<VerticalDistance Desc="in m">100</VerticalDistance>
 			</Segment>
-			<Segment ID="5">
+			<Segment ID="8">
+				<HorizontalAcceleration Desc="in m/s^2">0</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">0</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">0</HorizontalDistance>
+				<VerticalDistance Desc="in m">100</VerticalDistance>
+			</Segment>
+			<Segment ID="9">
+				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">20</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">1000</HorizontalDistance>
+				<VerticalDistance Desc="in m">100</VerticalDistance>
+			</Segment>
+			<Segment ID="10">
+				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">0</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">40</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">0</VerticalSpeed>
+				<HorizontalDistance Desc="in m">2200</HorizontalDistance>
+				<VerticalDistance Desc="in m">0</VerticalDistance>
+			</Segment>
+			<Segment ID="11">
+				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">3</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">-3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">1000</HorizontalDistance>
+				<VerticalDistance Desc="in m">500</VerticalDistance>
+			</Segment>
+			<Segment ID="12">
+				<HorizontalAcceleration Desc="in m/s^2">0</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">0</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">0</HorizontalDistance>
+				<VerticalDistance Desc="in m">100</VerticalDistance>
+			</Segment>
+			<Segment ID="13">
+				<HorizontalAcceleration Desc="in m/s^2">2</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">0</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">10</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">0</VerticalSpeed>
+				<HorizontalDistance Desc="in m">500</HorizontalDistance>
+				<VerticalDistance Desc="in m">0</VerticalDistance>
+			</Segment>
+			<Segment ID="14">
 				<HorizontalAcceleration Desc="in m/s^2">0</HorizontalAcceleration>
 				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
 				<HorizontalSpeed Desc="in m/s">0</HorizontalSpeed>
 				<VerticalSpeed Desc="in m/s">-3</VerticalSpeed>
 				<HorizontalDistance Desc="in m">0</HorizontalDistance>
-				<VerticalDistance Desc="in m">60</VerticalDistance>
+				<VerticalDistance Desc="in m">100</VerticalDistance>
+			</Segment>
+			<Segment ID="15">
+				<HorizontalAcceleration Desc="in m/s^2">1</HorizontalAcceleration>
+				<VerticalAcceleration Desc="in m/s^2">1</VerticalAcceleration>
+				<HorizontalSpeed Desc="in m/s">10</HorizontalSpeed>
+				<VerticalSpeed Desc="in m/s">-3</VerticalSpeed>
+				<HorizontalDistance Desc="in m">1000</HorizontalDistance>
+				<VerticalDistance Desc="in m">200</VerticalDistance>
 			</Segment>
 		</Segments>
 	</DesignMissionSettings>
