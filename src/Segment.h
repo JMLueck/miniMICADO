@@ -35,16 +35,10 @@ class Segment
         double HorizontalWay_PhaseOne;
         double HorizontalWay_PhaseTwo;
         double HorizontalWay_PhaseThree;
-        double Way_PhaseOne_Hor;
-        double Way_PhaseTwo_Hor;
-        double Way_PhaseThree_Hor;
         double Time_PhaseOne_Hor;
         double Time_PhaseTwo_Hor;
         double Time_PhaseThree_Hor;
         double Time_Hor;
-        double Way_PhaseOne_Vert;
-        double Way_PhaseTwo_Vert;
-        double Way_PhaseThree_Vert;
         double Time_PhaseOne_Vert;
         double Time_PhaseTwo_Vert;
         double Time_PhaseThree_Vert;
