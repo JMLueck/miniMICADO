@@ -1,4 +1,6 @@
 #include "MissionAnalysis.h"
+#include "functions.h"
+
 
 /** Analysis of Power and Energy Consumption **/
 /** Possibly implementation of 6-DOF equations here **/
@@ -8,11 +10,12 @@ MissionAnalysis::MissionAnalysis(node& configXML)
     configXML(configXML),
     Segments(configXML["NumberOfSegments"], vector<double>(12,0.0)),
     SegmentsTime(configXML["NumberOfSegments"], 0.0),
-    SegmentsTimeVert(configXML["NumberOfSegments"], 0.0),
+    //SegmentsTimeVert(configXML["NumberOfSegments"], 0.0),
     MissionTime(0.0)
 {
     calcMissionSegments();
     calcMissionTime();
+    calcSegmentsTimeAndWay();
     calcMissionWaypoints();
 }
 
@@ -29,8 +32,81 @@ void MissionAnalysis::calcMissionTime()
     for (int i = 1; i <= SegmentMap.size(); i++)
     {
         MissionTime += SegmentMap.at("Segment" + num2Str(i)).Time;
+        SegmentsTime.at(i-1) = MissionTime;
     }
 }
+
+
+void MissionAnalysis::calcSegmentsTimeAndWay()
+{
+    for (int i = 0; i < configXML["NumberOfSegments"]; i++)
+    {
+        if (SegmentMap.at("Segment" + num2Str(i+1)).Type == "Vertical")
+        {
+            Segments.at(i).at(0) = 0;
+            Segments.at(i).at(1) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseOne;
+            Segments.at(i).at(2) = 0;
+            Segments.at(i).at(3) = SegmentMap.at("Segment" + num2Str(i+1)).VerticalWay_PhaseOne;
+            Segments.at(i).at(4) = 0;
+            Segments.at(i).at(5) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseTwo;
+            Segments.at(i).at(6) = 0;
+            Segments.at(i).at(7) = SegmentMap.at("Segment" + num2Str(i+1)).VerticalWay_PhaseTwo;
+            Segments.at(i).at(8) = 0;
+            Segments.at(i).at(9) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseThree;
+            Segments.at(i).at(10) = 0;
+            Segments.at(i).at(11) = SegmentMap.at("Segment" + num2Str(i+1)).VerticalWay_PhaseThree;
+        }
+        else if (SegmentMap.at("Segment" + num2Str(i+1)).Type == "Aslope")
+        {
+            Segments.at(i).at(0) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseOne_Hor;
+            Segments.at(i).at(1) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseOne_Vert;
+            Segments.at(i).at(2) = SegmentMap.at("Segment" + num2Str(i+1)).HorizontalWay_PhaseOne;
+            Segments.at(i).at(3) = SegmentMap.at("Segment" + num2Str(i+1)).VerticalWay_PhaseOne;
+            Segments.at(i).at(4) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseTwo_Hor;
+            Segments.at(i).at(5) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseTwo_Vert;
+            Segments.at(i).at(6) = SegmentMap.at("Segment" + num2Str(i+1)).HorizontalWay_PhaseTwo;
+            Segments.at(i).at(7) = SegmentMap.at("Segment" + num2Str(i+1)).VerticalWay_PhaseTwo;
+            Segments.at(i).at(8) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseThree_Hor;
+            Segments.at(i).at(9) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseThree_Vert;
+            Segments.at(i).at(10) = SegmentMap.at("Segment" + num2Str(i+1)).HorizontalWay_PhaseThree;
+            Segments.at(i).at(11) = SegmentMap.at("Segment" + num2Str(i+1)).VerticalWay_PhaseThree;
+
+        }
+        else if (SegmentMap.at("Segment" + num2Str(i+1)).Type == "Hover")
+        {
+            Segments.at(i).at(0) = 0;
+            Segments.at(i).at(1) = 0;
+            Segments.at(i).at(2) = 0;
+            Segments.at(i).at(3) = 0;
+            Segments.at(i).at(4) = 0;
+            Segments.at(i).at(5) = 0;
+            Segments.at(i).at(6) = 0;
+            Segments.at(i).at(7) = 0;
+            Segments.at(i).at(8) = 0;
+            Segments.at(i).at(9) = 0;
+            Segments.at(i).at(10) = 0;
+            Segments.at(i).at(11) = 0;
+
+        }
+        else if (SegmentMap.at("Segment" + num2Str(i+1)).Type == "Horizontal")
+        {
+            Segments.at(i).at(0) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseOne;
+            Segments.at(i).at(1) = 0;
+            Segments.at(i).at(2) = SegmentMap.at("Segment" + num2Str(i+1)).HorizontalWay_PhaseOne;
+            Segments.at(i).at(3) = 0;
+            Segments.at(i).at(4) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseTwo;
+            Segments.at(i).at(5) = 0;
+            Segments.at(i).at(6) = SegmentMap.at("Segment" + num2Str(i+1)).HorizontalWay_PhaseTwo;
+            Segments.at(i).at(7) = 0;
+            Segments.at(i).at(8) = SegmentMap.at("Segment" + num2Str(i+1)).Time_PhaseThree;
+            Segments.at(i).at(9) = 0;
+            Segments.at(i).at(10) = SegmentMap.at("Segment" + num2Str(i+1)).HorizontalWay_PhaseThree;
+            Segments.at(i).at(11) = 0;
+        }
+
+    }
+}
+
 
 int MissionAnalysis::getSegmentNumber(double currentTime)
 {
@@ -49,32 +125,89 @@ int MissionAnalysis::getVerticalPhaseNumber(double currentTime)
 
     if (j > 0)
     {
-        if (currentTime >= (SegmentsTime.at(j-1) + Segments.at(j).at(1)) && currentTime <= (SegmentsTime.at(j-1) + SegmentsTimeVert.at(j) - Segments.at(j).at(9)))
+        if (SegmentMap.at("Segment" + num2Str(j+1)).Type == "Vertical" || SegmentMap.at("Segment" + num2Str(j+1)).Type == "Aslope")
         {
-            return 5;   // middle phase
+            if (currentTime >= (SegmentsTime.at(j-1) + Segments.at(j).at(1)) && currentTime <= (SegmentsTime.at(j) - Segments.at(j).at(9)))
+            {
+                return 5;   // middle phase
+            }
+            if (currentTime >= SegmentsTime.at(j-1) && currentTime <= (SegmentsTime.at(j) - Segments.at(j).at(9) - Segments.at(j).at(5)))
+            {
+                return 1;   // first phase
+            }
+            if (currentTime >= (SegmentsTime.at(j-1) + Segments.at(j).at(1) + Segments.at(j).at(5)) && currentTime <= (SegmentsTime.at(j)))
+            {
+                return 9; // last phase
+            }
         }
-        if (currentTime >= SegmentsTime.at(j-1) && currentTime <= (SegmentsTime.at(j-1) + SegmentsTimeVert.at(j) - Segments.at(j).at(9) - Segments.at(j).at(5)))
+        else
         {
-            return 1;   // first phase
-        }
-        if (currentTime >= (SegmentsTime.at(j-1) + Segments.at(j).at(1) + Segments.at(j).at(5)) && currentTime <= (SegmentsTime.at(j)+ SegmentsTimeVert.at(j)))
-        {
-            return 9;
+            return 12;
         }
     }
     else
     {
-        if (currentTime >= (0 + Segments.at(j).at(1)) && currentTime <= (0 + SegmentsTimeVert.at(j) - Segments.at(j).at(9)))
+        if (currentTime >= (0 + Segments.at(j).at(1)) && currentTime <= (SegmentsTime.at(j) - Segments.at(j).at(9)))
         {
             return 5;
         }
-        if (currentTime >= 0  && currentTime <= (0 + SegmentsTimeVert.at(j) - Segments.at(j).at(9) - Segments.at(j).at(5)))
+        else if (currentTime >= 0  && currentTime <= (SegmentsTime.at(j) - Segments.at(j).at(9) - Segments.at(j).at(5)))
         {
             return 1;
         }
-        if (currentTime >= (0 + Segments.at(j).at(1) + Segments.at(j).at(5))  && currentTime <= (0 + SegmentsTimeVert.at(j) - Segments.at(j).at(9)))
+        else if (currentTime >= (0 + Segments.at(j).at(1) + Segments.at(j).at(5))  && currentTime <= SegmentsTime.at(j))
         {
             return 9;
+        }
+    }
+}
+
+int MissionAnalysis::getHorizontalPhaseNumber(double currentTime)
+{
+    int j = getSegmentNumber(currentTime);
+
+    if (j > 0)
+    {
+        if (SegmentMap.at("Segment" + num2Str(j+1)).Type == "Horizontal" || SegmentMap.at("Segment" + num2Str(j+1)).Type == "Aslope")
+        {
+            if (currentTime >= (SegmentsTime.at(j-1) + Segments.at(j).at(0)) && currentTime <= (SegmentsTime.at(j) - Segments.at(j).at(8)))
+            {
+                return 4;   // middle phase
+            }
+            if (currentTime >= SegmentsTime.at(j-1) && currentTime <= (SegmentsTime.at(j) - Segments.at(j).at(8) - Segments.at(j).at(4)))
+            {
+                return 0;   // first phase
+            }
+            if (currentTime >= (SegmentsTime.at(j-1) + Segments.at(j).at(0) + Segments.at(j).at(4)) && currentTime <= (SegmentsTime.at(j)))
+            {
+                return 8; // last phase
+            }
+        }
+        else
+        {
+            return 12;
+        }
+    }
+    else
+    {
+        if (SegmentMap.at("Segment" + num2Str(j+1)).Type == "Aslope")
+        {
+            if (currentTime >= (0 + Segments.at(j).at(0)) && currentTime <= (SegmentsTime.at(j) - Segments.at(j).at(8)))
+            {
+                return 4;
+            }
+            if (currentTime >= 0  && currentTime <= (SegmentsTime.at(j) - Segments.at(j).at(8) - Segments.at(j).at(4)))
+            {
+                return 0;
+            }
+            if (currentTime >= (0 + Segments.at(j).at(0) + Segments.at(j).at(4))  && currentTime <= SegmentsTime.at(j))
+            {
+                return 8;
+            }
+        }
+        else
+        {
+            return 12;
         }
     }
 }
@@ -83,8 +216,13 @@ void MissionAnalysis::calcMissionWaypoints()
 {
     double TimeSegHor = 0;
     double TimeSegVert = 0;
-    double MissionTimeStep = MissionTime / int(MissionTime); // close to 1sec and evenly distributed
-    vector<vector<double>> Waypoints (7, vector<double>(int(MissionTime),0.0));
+    LastSegment = false;
+    double PreviousVerticalSpeed = 0;
+    double PreviousHorizontalSpeed = 0;
+    double PreviousVerticalPosition = 0;
+    double PreviousHorizontalPosition = 0;
+    double MissionTimeStep = MissionTime / (configXML["IterationTimeFactor"]*int(MissionTime)); // close to 1sec and evenly distributed
+    vector<vector<double>> Waypoints (7, vector<double>((int(MissionTime)*configXML["IterationTimeFactor"]+1),0.0));
 
     /** initialize step one **/
     Waypoints.at(0).at(0) = 0; // time
@@ -95,83 +233,480 @@ void MissionAnalysis::calcMissionWaypoints()
     Waypoints.at(5).at(0) = 0; // horizontal position
     Waypoints.at(6).at(0) = 0; // vertical position
 
-    for (int i = 1; i <= int(MissionTime); i++)
+    for (int i = 1; i <= (int(MissionTime)*configXML["IterationTimeFactor"]); i++)
     {
         Waypoints.at(0).at(i) = MissionTimeStep * i;
 
         int j = getSegmentNumber(Waypoints.at(0).at(i));
         int v = getVerticalPhaseNumber(Waypoints.at(0).at(i));
+        int w = getHorizontalPhaseNumber(Waypoints.at(0).at(i));
 
-        // horizontal acceleration
-        if (configXML["Segment@"+num2Str(j+1)+"/HorizontalAcceleration"] == 0)
+        if ((j+1) == configXML["NumberOfSegments"])
+        {
+            LastSegment = true;
+        }
+
+        if (SegmentMap.at("Segment" + num2Str(j+1)).Type == "Vertical")
         {
             Waypoints.at(1).at(i) = 0;
-        }
-        else
-        {
-            if (Waypoints.at(0).at(i) > (SegmentsTime.at(j) - Segments.at(j).at(8))) // third phase of current segment
+            Waypoints.at(3).at(i) = 0;
+            for (int z = 0; z<j; z++)
             {
-                Waypoints.at(1).at(i) = configXML["Segment@"+num2Str(j+1)+"/HorizontalAcceleration"];
+                Waypoints.at(5).at(i) += SegmentMap.at("Segment" + num2Str(z+1)).HorizontalDistance;
             }
-        }
 
-        // vertical acceleration
-
-        if ( Segments.at(j).at(v) == 0 || getVerticalPhaseNumber(Waypoints.at(0).at(i)) == 5 )
-        {
-            Waypoints.at(2).at(i) = 0;
-        }
-        else
-        {
-            if (j == (configXML["NumberOfSegments"]-1))
+            if (configXML["Segment@" + num2Str(j+1) + "/VerticalSpeed"] > 0)
             {
-                if ( (v=1 && configXML["Segment@"+num2Str(j)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"]) || (v=9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < 0) )
+                if (v == 1)
                 {
-                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
+                    Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                    Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                    Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
                 }
-                else
+                else if (v == 5)
                 {
-                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
+                    Waypoints.at(2).at(i) = 0;
+                    Waypoints.at(4).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalVelocity;
+                    Waypoints.at(6).at(i) = Waypoints.at(4).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
                 }
-            }
-            else if  (j == 0)
-            {
-                if ( (v=1 && 0 < configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"]) || (v=9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+2)+"/VerticalSpeed"]) )
+                else if (v == 9)
                 {
-                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];;
-                }
-                else
-                {
-                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
+                    if(configXML["Segment@" + num2Str(j+2) + "/VerticalSpeed"] > configXML["Segment@" + num2Str(j+1) + "/VerticalSpeed"])
+                    {
+                        Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                        Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                        Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                    }
+                    else
+                    {
+                        Waypoints.at(2).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                        Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                        Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                    }
                 }
             }
             else
             {
-                if ( (v=1 && configXML["Segment@"+num2Str(j)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"]) || (v=9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+2)+"/VerticalSpeed"]) )
+                if (v == 1)
                 {
-                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];;
+                    Waypoints.at(2).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                    Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                    Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
                 }
-                else
+                else if (v == 5)
                 {
-                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
+                    Waypoints.at(2).at(i) = 0;
+                    Waypoints.at(4).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalVelocity;
+                    Waypoints.at(6).at(i) = Waypoints.at(4).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                }
+                else if (v == 9)
+                {
+                    if (LastSegment != true)
+                    {
+                        if(configXML["Segment@" + num2Str(j+2) + "/VerticalSpeed"] < configXML["Segment@" + num2Str(j+1) + "/VerticalSpeed"])
+                        {
+                            Waypoints.at(2).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                            Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                            Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                        }
+                        else
+                        {
+                            Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                            Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                            Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                        }
+                    }
+                    else
+                    {
+                        Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                        Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                        Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                    }
                 }
             }
         }
 
-        Waypoints.at(3).at(i) = Waypoints.at(3).at(i-1) + Waypoints.at(1).at(i) * MissionTimeStep;
-
-        if (getVerticalPhaseNumber(Waypoints.at(0).at(i)) == 5)
+        else if (SegmentMap.at("Segment" + num2Str(j+1)).Type == "Horizontal")
         {
-            Waypoints.at(4).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"];
-        }
-        else
-        {
-            Waypoints.at(4).at(i) = Waypoints.at(4).at(i-1) + Waypoints.at(2).at(i) * MissionTimeStep;
+            Waypoints.at(2).at(i) = 0;
+            Waypoints.at(4).at(i) = 0;
+            Waypoints.at(6).at(i) = 0; //initialisieren
+            for (int z = 0; z<j; z++)
+            {
+                if(SegmentMap.at("Segment" + num2Str(z+1)).VerticalVelocity > 0)
+                {
+                    Waypoints.at(6).at(i) += SegmentMap.at("Segment" + num2Str(z+1)).VerticalDistance;
+                }
+                else
+                {
+                    Waypoints.at(6).at(i) -= SegmentMap.at("Segment" + num2Str(z+1)).VerticalDistance;
+                }
+            }
+
+            if(w == 0)
+            {
+                Waypoints.at(1).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+            }
+            else if (w == 4)
+            {
+                Waypoints.at(1).at(i) = 0;
+                Waypoints.at(3).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalVelocity;
+                Waypoints.at(5).at(i) = Waypoints.at(3).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+            }
+            else if (w == 8)
+            {
+                if(configXML["Segment@" + num2Str(j+2) + "/HorizontalSpeed"] > configXML["Segment@" + num2Str(j+1) + "/HorizontalSpeed"])
+                {
+                    Waypoints.at(1).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                    Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                    Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                }
+                else
+                {
+                    Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                    Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                    Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                }
+            }
+
         }
 
-        Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow(MissionTimeStep,2) + Waypoints.at(3).at(i) * MissionTimeStep + Waypoints.at(5).at(i-1);
-        Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow(MissionTimeStep,2) + Waypoints.at(4).at(i) * MissionTimeStep + Waypoints.at(6).at(i-1);
+        else if (SegmentMap.at("Segment" + num2Str(j+1)).Type == "Hover")
+        {
+            Waypoints.at(1).at(i) = 0;
+            Waypoints.at(2).at(i) = 0;
+            Waypoints.at(3).at(i) = 0;
+            Waypoints.at(4).at(i) = 0;
+            Waypoints.at(5).at(i) = PreviousHorizontalPosition;
+            Waypoints.at(6).at(i) = PreviousVerticalPosition;
+        }
+
+        else if (SegmentMap.at("Segment" + num2Str(j+1)).Type == "Aslope")
+        {
+            if (configXML["Segment@" + num2Str(j+1) + "/VerticalSpeed"] > 0)
+            {
+                if (v == 1)
+                {
+                    Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                    Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                    Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                }
+                else if (v == 5)
+                {
+                    Waypoints.at(2).at(i) = 0;
+                    Waypoints.at(4).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalVelocity;
+                    Waypoints.at(6).at(i) = Waypoints.at(4).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                }
+                else if (v == 9)
+                {
+                    if(configXML["Segment@" + num2Str(j+2) + "/VerticalSpeed"] > configXML["Segment@" + num2Str(j+1) + "/VerticalSpeed"])
+                    {
+                        Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                        Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                        Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                    }
+                    else
+                    {
+                        if(SegmentMap.at("Segment" + num2Str(j+1)).Time_Vert == SegmentMap.at("Segment" + num2Str(j+1)).Time_PhaseThree_Vert)
+                        {
+                            Waypoints.at(2).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                            Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                            Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                            if(Waypoints.at(4).at(i) <= 0)
+                            {
+                                Waypoints.at(2).at(i) = 0;
+                                Waypoints.at(4).at(i) = 0;
+                                Waypoints.at(6).at(i) = PreviousVerticalPosition;
+                            }
+                        }
+                        else
+                        {
+                            Waypoints.at(2).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                            Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                            Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                        }
+                    }
+                }
+
+                if(w == 0)
+                {
+                    Waypoints.at(1).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                    Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                    Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                }
+                else if (w == 4)
+                {
+                    Waypoints.at(1).at(i) = 0;
+                    Waypoints.at(3).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalVelocity;
+                    Waypoints.at(5).at(i) = Waypoints.at(3).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                }
+                else if (w == 8)
+                {
+                    if(configXML["Segment@" + num2Str(j+2) + "/HorizontalSpeed"] > configXML["Segment@" + num2Str(j+1) + "/HorizontalSpeed"])
+                    {
+                        Waypoints.at(1).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                        Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                        Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                    }
+                    else
+                    {
+                        if(SegmentMap.at("Segment" + num2Str(j+1)).Time_Hor == SegmentMap.at("Segment" + num2Str(j+1)).Time_PhaseThree_Hor)
+                        {
+                            Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                            Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                            Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                            if(Waypoints.at(3).at(i) <= 0)
+                            {
+                                Waypoints.at(1).at(i) = 0;
+                                Waypoints.at(3).at(i) = 0;
+                                Waypoints.at(5).at(i) = PreviousHorizontalPosition;
+                            }
+                        }
+                        else
+                        {
+                            Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                            Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                            Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (v == 1)
+                {
+                    Waypoints.at(2).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                    Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                    Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                }
+                else if (v == 5)
+                {
+                    Waypoints.at(2).at(i) = 0;
+                    Waypoints.at(4).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalVelocity;
+                    Waypoints.at(6).at(i) = Waypoints.at(4).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                }
+                else if (v == 9)
+                {
+                    if (LastSegment != true)
+                    {
+                        if(configXML["Segment@" + num2Str(j+2) + "/VerticalSpeed"] <= configXML["Segment@" + num2Str(j+1) + "/VerticalSpeed"])
+                        {
+                            Waypoints.at(2).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                            Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                            Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                        }
+                        else
+                        {
+                            if(SegmentMap.at("Segment" + num2Str(j+1)).Time_Vert == SegmentMap.at("Segment" + num2Str(j+1)).Time_PhaseThree_Vert)
+                            {
+                                Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                                Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                                Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                                if(Waypoints.at(4).at(i) >= 0)
+                                {
+                                    Waypoints.at(2).at(i) = 0;
+                                    Waypoints.at(4).at(i) = 0;
+                                    Waypoints.at(6).at(i) = PreviousVerticalPosition;
+                                }
+                            }
+                            else
+                            {
+                                Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                                Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                                Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(SegmentMap.at("Segment" + num2Str(j+1)).Time_Vert == SegmentMap.at("Segment" + num2Str(j+1)).Time_PhaseThree_Vert)
+                            {
+                                Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                                Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                                Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                                if(Waypoints.at(4).at(i) >= 0)
+                                {
+                                    Waypoints.at(2).at(i) = 0;
+                                    Waypoints.at(4).at(i) = 0;
+                                    Waypoints.at(6).at(i) = PreviousVerticalPosition;
+                                }
+                            }
+                            else
+                            {
+                                Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                                Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                                Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                            }
+                    }
+                }
+
+                if(w == 0)
+                {
+                    Waypoints.at(1).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                    Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                    Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                }
+                else if (w == 4)
+                {
+                    Waypoints.at(1).at(i) = 0;
+                    Waypoints.at(3).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalVelocity;
+                    Waypoints.at(5).at(i) = Waypoints.at(3).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                }
+                else if (w == 8)
+                {
+                    if (LastSegment != true)
+                    {
+                        if(configXML["Segment@" + num2Str(j+2) + "/HorizontalSpeed"] >= configXML["Segment@" + num2Str(j+1) + "/HorizontalSpeed"])
+                        {
+                            Waypoints.at(1).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                            Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                            Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                        }
+                        else
+                        {
+                            if(SegmentMap.at("Segment" + num2Str(j+1)).Time_Hor == SegmentMap.at("Segment" + num2Str(j+1)).Time_PhaseThree_Hor)
+                            {
+                                Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                                Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                                Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                                if(Waypoints.at(4).at(i) <= 0)
+                                {
+                                    Waypoints.at(1).at(i) = 0;
+                                    Waypoints.at(3).at(i) = 0;
+                                    Waypoints.at(5).at(i) = PreviousHorizontalPosition;
+                                }
+                            }
+                            else
+                            {
+                                Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                                Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                                Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        if(SegmentMap.at("Segment" + num2Str(j+1)).Time_Hor == SegmentMap.at("Segment" + num2Str(j+1)).Time_PhaseThree_Hor)
+                            {
+                                Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                                Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                                Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                                if(Waypoints.at(4).at(i) <= 0)
+                                {
+                                    Waypoints.at(1).at(i) = 0;
+                                    Waypoints.at(3).at(i) = 0;
+                                    Waypoints.at(5).at(i) = PreviousHorizontalPosition;
+                                }
+                            }
+                            else
+                            {
+                                Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                                Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                                Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                            }
+                    }
+                }
+            }
+        }
+
+        PreviousVerticalSpeed = Waypoints.at(4).at(i);
+        PreviousVerticalPosition = Waypoints.at(6).at(i);
+        PreviousHorizontalSpeed = Waypoints.at(3).at(i);
+        PreviousHorizontalPosition = Waypoints.at(5).at(i);
+
+        if(i == (int(MissionTime)*configXML["IterationTimeFactor"]))
+        {
+            Waypoints.at(1).at(i) = 0; // horizontal acceleration
+            Waypoints.at(2).at(i) = 0; // vertical acceleration
+            Waypoints.at(3).at(i) = 0; // horizontal velocity
+            Waypoints.at(4).at(i) = 0; // vertical velocity
+
+            Waypoints.at(5).at(i) = 0; //initialisieren
+            for (int z = 0; z<=j; z++)
+            {
+                Waypoints.at(5).at(i) += SegmentMap.at("Segment" + num2Str(z+1)).HorizontalDistance;
+            }
+
+            Waypoints.at(6).at(i) = 0; // vertical position
+
+            break;
+        }
+
+        // horizontal acceleration
+//        if (configXML["Segment@"+num2Str(j+1)+"/HorizontalAcceleration"] == 0)
+//        {
+//            Waypoints.at(1).at(i) = 0;
+//        }
+//        else
+//        {
+//            if (Waypoints.at(0).at(i) > (SegmentsTime.at(j) - Segments.at(j).at(8))) // third phase of current segment
+//            {
+//                Waypoints.at(1).at(i) = configXML["Segment@"+num2Str(j+1)+"/HorizontalAcceleration"];
+//            }
+//        }
+//
+//        // vertical acceleration
+//
+//        if ( Segments.at(j).at(v) == 0 || getVerticalPhaseNumber(Waypoints.at(0).at(i)) == 5 )
+//        {
+//            Waypoints.at(2).at(i) = 0;
+//        }
+//        else
+//        {
+//            if (j == (configXML["NumberOfSegments"]-1))
+//            {
+//                if ( (v==1 && configXML["Segment@"+num2Str(j)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"]) || (v==9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < 0) )
+//                {
+//                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
+//                }
+//                else
+//                {
+//                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
+//                }
+//            }
+//            else if  (j == 0)
+//            {
+//                if ( (v==1 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] > 0) || (v=9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+2)+"/VerticalSpeed"]) )
+//                {
+//                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];;
+//                }
+//                else
+//                {
+//                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
+//                }
+//            }
+//            else
+//            {
+//                if ( (v==1 && configXML["Segment@"+num2Str(j)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"]) || (v=9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+2)+"/VerticalSpeed"]) )
+//                {
+//                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];;
+//                }
+//                else
+//                {
+//                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
+//                }
+//            }
+//        }
+//
+//        Waypoints.at(3).at(i) = Waypoints.at(3).at(i-1) + Waypoints.at(1).at(i) * MissionTimeStep;
+//
+//        if (getVerticalPhaseNumber(Waypoints.at(0).at(i)) == 5)
+//        {
+//            Waypoints.at(4).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"];
+//        }
+//        else
+//        {
+//            Waypoints.at(4).at(i) = Waypoints.at(4).at(i-1) + Waypoints.at(2).at(i) * MissionTimeStep;
+//        }
+//
+//        Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow(MissionTimeStep,2) + Waypoints.at(3).at(i) * MissionTimeStep + Waypoints.at(5).at(i-1);
+//        Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow(MissionTimeStep,2) + Waypoints.at(4).at(i) * MissionTimeStep + Waypoints.at(6).at(i-1);
     }
+
+
 
 
     const string waypoints_file = "Waypoints.csv";
@@ -179,17 +714,20 @@ void MissionAnalysis::calcMissionWaypoints()
     waypoints.open(waypoints_file.c_str());
     for (int i = 0; i < Waypoints.at(0).size(); i++)
     {
-        waypoints << Waypoints.at(0).at(i) << ";";
-        waypoints << Waypoints.at(1).at(i) << ";";
-        waypoints << Waypoints.at(2).at(i) << ";";
-        waypoints << Waypoints.at(3).at(i) << ";";
-        waypoints << Waypoints.at(4).at(i) << ";";
-        waypoints << Waypoints.at(5).at(i) << ";";
-        waypoints << Waypoints.at(6).at(i) << ";";
+        waypoints << Waypoints.at(0).at(i) << ",";
+        waypoints << Waypoints.at(1).at(i) << ",";
+        waypoints << Waypoints.at(2).at(i) << ",";
+        waypoints << Waypoints.at(3).at(i) << ",";
+        waypoints << Waypoints.at(4).at(i) << ",";
+        waypoints << Waypoints.at(5).at(i) << ",";
+        waypoints << Waypoints.at(6).at(i) <<endl;
         waypoints << endl;
     }
     waypoints.close();
 
+    string gnuplot_string = "C:\\Program Files (x86)\\gnuplot\\bin\\gnuplot.exe -e \"set datafile separator ',''\" -e \"set terminal wxt size 1200,600\" -e \"set autoscale\" -e \"set xtic auto\" -e \"set ytic auto\" -e \"set terminal png size 2600,1500 font 'Arial,18'\" -e \"set output 'C:/Users/Sebastian/Desktop/HiWi ILR/miniMICADO/Waypoints_plot.png'\" -e \"set multiplot layout 5,3 columnsfirst scale 1,0.9 font ',10'\" -e \"set xlabel 'Horizontale Position'\" -e \"set ylabel 'Vert. Position'\" -e \"plot'Waypoints.csv' using 6:7 title 'Missionsprofil'\" -e \"set xlabel 'Horizontale Position'\" -e \"set ylabel 'Hor. Geschwindigkeit'\" -e \"plot'Waypoints.csv' using 6:4 title 'Horizontale Geschwindigkeit'\" -e \"set xlabel 'Vertikale Position'\" -e \"set ylabel 'Vert. Geschwindigkeit'\" -e \"plot'Waypoints.csv' using 7:5 title 'Vertikale Geschwindigkeit'\" -e \"set xlabel 'Horizontale Position'\" -e \"set ylabel 'Hor. Beschleunigung'\" -e \"plot'Waypoints.csv' using 6:2 title 'Horizontale Beschleunigung'\" -e \"set xlabel 'Vertikale Position'\" -e \"set ylabel 'Vert. Beschleunigung'\" -e \"plot'Waypoints.csv' using 7:3 title 'Vertikale Beschleunigung'\" -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Hor. Position'\" -e \"plot'Waypoints.csv' using 1:6 title 'Horizontale Position'\" -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Hor. Geschwindigkeit'\" -e \"plot'Waypoints.csv' using 1:4 title 'Horizontale Geschwindigkeit'\" -e clear -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Hor. Beschleunigung'\" -e \"plot'Waypoints.csv' using 1:2 title 'Horizontale Beschleunigung'\" -e clear -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Vert. Position'\" -e \"plot'Waypoints.csv' using 1:7 title 'Vertikale Position'\" -e clear -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Vert. Geschwindigkeit'\" -e \"plot'Waypoints.csv' using 1:5 title 'Vertikale Geschwindigkeit'\" -e clear -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Vert. Beschleunigung'\" -e \"plot'Waypoints.csv' using 1:3 title 'Vertikale Beschleunigung'\" -e \"unset multiplot\" ";
+    handleChildProcess(gnuplot_string, "");
+    //set datafile separator ","
 }
 
 

@@ -14,7 +14,7 @@ class MissionAnalysis
 
         vector<vector<double>> Segments;
         vector<double> SegmentsTime;
-        vector<double> SegmentsTimeVert;
+        //vector<double> SegmentsTimeVert;
 
         double MissionTime;
 
@@ -27,9 +27,13 @@ class MissionAnalysis
         void calcMissionSegments();
         void calcMissionWaypoints();
         void calcMissionTime();
+        void calcSegmentsTimeAndWay();
 
         int getSegmentNumber(double currentTime);
         int getVerticalPhaseNumber(double currentTime);
+        int getHorizontalPhaseNumber(double currentTime);
+
+        bool LastSegment;
 
     protected:
 
