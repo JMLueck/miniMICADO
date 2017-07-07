@@ -725,9 +725,9 @@ void MissionAnalysis::calcMissionWaypoints()
     }
     waypoints.close();
 
-    string gnuplot_string = "C:\\Program Files (x86)\\gnuplot\\bin\\gnuplot.exe -e \"set datafile separator ',''\" -e \"set terminal wxt size 1200,600\" -e \"set autoscale\" -e \"set xtic auto\" -e \"set ytic auto\" -e \"set terminal png size 2600,1500 font 'Arial,18'\" -e \"set output 'C:/Users/Sebastian/Desktop/HiWi ILR/miniMICADO/Waypoints_plot.png'\" -e \"set multiplot layout 5,3 columnsfirst scale 1,0.9 font ',10'\" -e \"set xlabel 'Horizontale Position'\" -e \"set ylabel 'Vert. Position'\" -e \"plot'Waypoints.csv' using 6:7 title 'Missionsprofil'\" -e \"set xlabel 'Horizontale Position'\" -e \"set ylabel 'Hor. Geschwindigkeit'\" -e \"plot'Waypoints.csv' using 6:4 title 'Horizontale Geschwindigkeit'\" -e \"set xlabel 'Vertikale Position'\" -e \"set ylabel 'Vert. Geschwindigkeit'\" -e \"plot'Waypoints.csv' using 7:5 title 'Vertikale Geschwindigkeit'\" -e \"set xlabel 'Horizontale Position'\" -e \"set ylabel 'Hor. Beschleunigung'\" -e \"plot'Waypoints.csv' using 6:2 title 'Horizontale Beschleunigung'\" -e \"set xlabel 'Vertikale Position'\" -e \"set ylabel 'Vert. Beschleunigung'\" -e \"plot'Waypoints.csv' using 7:3 title 'Vertikale Beschleunigung'\" -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Hor. Position'\" -e \"plot'Waypoints.csv' using 1:6 title 'Horizontale Position'\" -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Hor. Geschwindigkeit'\" -e \"plot'Waypoints.csv' using 1:4 title 'Horizontale Geschwindigkeit'\" -e clear -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Hor. Beschleunigung'\" -e \"plot'Waypoints.csv' using 1:2 title 'Horizontale Beschleunigung'\" -e clear -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Vert. Position'\" -e \"plot'Waypoints.csv' using 1:7 title 'Vertikale Position'\" -e clear -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Vert. Geschwindigkeit'\" -e \"plot'Waypoints.csv' using 1:5 title 'Vertikale Geschwindigkeit'\" -e clear -e \"set xlabel 'Zeit'\" -e \"set ylabel 'Vert. Beschleunigung'\" -e \"plot'Waypoints.csv' using 1:3 title 'Vertikale Beschleunigung'\" -e \"unset multiplot\" ";
-    handleChildProcess(gnuplot_string, "");
-    //set datafile separator ","
+    string plotCommand = "gnuplot\\gnuplot.exe \ plots\\Mission.plt";
+    handleChildProcess(plotCommand, "");
+    myRuntimeInfo->out << "Mission Profile is calculated and plotted" << endl;
 }
 
 
