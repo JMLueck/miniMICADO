@@ -634,8 +634,6 @@ vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
         }
     }
 
-    return Waypoints;
-
 
     const string waypoints_file = "Waypoints.csv";
     ofstream waypoints;
@@ -656,6 +654,8 @@ vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
     string plotCommand = "gnuplot\\gnuplot.exe \ plots\\Mission.plt";
     handleChildProcess(plotCommand, "");
     myRuntimeInfo->out << "Mission Profile is calculated and plotted" << endl;
+
+    return Waypoints;
 }
 
 void MissionAnalysis::doMissionAnalysis ()
