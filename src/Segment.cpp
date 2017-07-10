@@ -119,6 +119,8 @@ void Segment::getSegmentTimeAndWay()
         if (VerticalVelocity < 0) /** Exception für Flug in negative Höhen **/
         {
             myRuntimeInfo->err << "Negative Velocity at First Segment. Please adjust the settings!" << endl;
+            system("");
+            exit(1);
         }
         else
         {
@@ -153,6 +155,8 @@ void Segment::getSegmentTimeAndWay()
                 if (Time_PhaseTwo < 0)
                 {
                     myRuntimeInfo->err << "Error in first Segment. Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                    system("");
+                    exit(1);
                 }
                 Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
             }
@@ -201,11 +205,15 @@ void Segment::getSegmentTimeAndWay()
                 if (Time_PhaseTwo_Vert < 0)
                 {
                     myRuntimeInfo->err << "Error in first Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                    system("");
+                    exit(1);
                 }
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
                 if (Time_PhaseTwo_Hor < 0)
                 {
                     myRuntimeInfo->err << "Error in first Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                    system("");
+                    exit(1);
                 }
                 Time_Vert = Time_PhaseOne_Vert + Time_PhaseTwo_Vert + Time_PhaseThree_Vert;
                 Time_Hor = Time_PhaseOne_Hor + Time_PhaseTwo_Hor + Time_PhaseThree_Hor;
@@ -274,6 +282,8 @@ void Segment::getSegmentTimeAndWay()
             else
             {
                 myRuntimeInfo->err << "First Segment is not suitable. Please adjust the settings!" << endl;
+                system("");
+                exit(1);
             }
 
         }
@@ -311,6 +321,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                     myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                    system("");
+                    exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseThree + Time_PhaseTwo;
@@ -326,6 +338,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseThree + Time_PhaseTwo;
@@ -353,6 +367,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
@@ -368,6 +384,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
@@ -395,6 +413,8 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo = HorizontalWay_PhaseTwo / HorizontalVelocity;
                 Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
@@ -415,6 +435,8 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo = HorizontalWay_PhaseTwo / HorizontalVelocity;
                 Time = Time_PhaseTwo + Time_PhaseThree;
@@ -481,10 +503,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -643,10 +669,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -821,10 +851,14 @@ void Segment::getSegmentTimeAndWay()
                     if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -985,10 +1019,14 @@ void Segment::getSegmentTimeAndWay()
                     if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_Vert = Time_PhaseTwo_Vert + Time_PhaseThree_Vert;
                     Time_Hor = Time_PhaseOne_Hor + Time_PhaseTwo_Hor + Time_PhaseThree_Hor;
@@ -1201,10 +1239,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1430,10 +1472,14 @@ void Segment::getSegmentTimeAndWay()
                     if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1570,6 +1616,8 @@ void Segment::getSegmentTimeAndWay()
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment. Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
@@ -1583,6 +1631,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment. Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseTwo + Time_PhaseThree;
@@ -1613,10 +1663,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1672,10 +1726,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1746,10 +1804,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1818,10 +1880,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1894,6 +1960,8 @@ void Segment::getSegmentTimeAndWay()
         else
         {
             myRuntimeInfo->err << "Last Segment is not suitable. Please adjust the settings!" << endl;
+            system("");
+            exit(1);
         }
     }
 }
