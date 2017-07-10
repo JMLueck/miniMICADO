@@ -10,13 +10,13 @@ MissionAnalysis::MissionAnalysis(node& configXML)
     configXML(configXML),
     Segments(configXML["NumberOfSegments"], vector<double>(12,0.0)),
     SegmentsTime(configXML["NumberOfSegments"], 0.0),
-    //SegmentsTimeVert(configXML["NumberOfSegments"], 0.0),
     MissionTime(0.0)
+    //Waypoints(7, vector<double>((int(MissionTime)*configXML["IterationTimeFactor"]+1),0.0))
 {
     calcMissionSegments();
     calcMissionTime();
     calcSegmentsTimeAndWay();
-    calcMissionWaypoints();
+    Waypoints = calcMissionWaypoints();
 }
 
 void MissionAnalysis::calcMissionSegments()
@@ -212,17 +212,15 @@ int MissionAnalysis::getHorizontalPhaseNumber(double currentTime)
     }
 }
 
-void MissionAnalysis::calcMissionWaypoints()
+vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
 {
-    double TimeSegHor = 0;
-    double TimeSegVert = 0;
+    vector<vector<double>> Waypoints (7, vector<double>((int(MissionTime)*configXML["IterationTimeFactor"]+1),0.0));
     LastSegment = false;
     double PreviousVerticalSpeed = 0;
     double PreviousHorizontalSpeed = 0;
     double PreviousVerticalPosition = 0;
     double PreviousHorizontalPosition = 0;
     double MissionTimeStep = MissionTime / (configXML["IterationTimeFactor"]*int(MissionTime)); // close to 1sec and evenly distributed
-    vector<vector<double>> Waypoints (7, vector<double>((int(MissionTime)*configXML["IterationTimeFactor"]+1),0.0));
 
     /** initialize step one **/
     Waypoints.at(0).at(0) = 0; // time
@@ -634,79 +632,9 @@ void MissionAnalysis::calcMissionWaypoints()
 
             break;
         }
-
-        // horizontal acceleration
-//        if (configXML["Segment@"+num2Str(j+1)+"/HorizontalAcceleration"] == 0)
-//        {
-//            Waypoints.at(1).at(i) = 0;
-//        }
-//        else
-//        {
-//            if (Waypoints.at(0).at(i) > (SegmentsTime.at(j) - Segments.at(j).at(8))) // third phase of current segment
-//            {
-//                Waypoints.at(1).at(i) = configXML["Segment@"+num2Str(j+1)+"/HorizontalAcceleration"];
-//            }
-//        }
-//
-//        // vertical acceleration
-//
-//        if ( Segments.at(j).at(v) == 0 || getVerticalPhaseNumber(Waypoints.at(0).at(i)) == 5 )
-//        {
-//            Waypoints.at(2).at(i) = 0;
-//        }
-//        else
-//        {
-//            if (j == (configXML["NumberOfSegments"]-1))
-//            {
-//                if ( (v==1 && configXML["Segment@"+num2Str(j)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"]) || (v==9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < 0) )
-//                {
-//                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
-//                }
-//                else
-//                {
-//                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
-//                }
-//            }
-//            else if  (j == 0)
-//            {
-//                if ( (v==1 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] > 0) || (v=9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+2)+"/VerticalSpeed"]) )
-//                {
-//                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];;
-//                }
-//                else
-//                {
-//                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
-//                }
-//            }
-//            else
-//            {
-//                if ( (v==1 && configXML["Segment@"+num2Str(j)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"]) || (v=9 && configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"] < configXML["Segment@"+num2Str(j+2)+"/VerticalSpeed"]) )
-//                {
-//                    Waypoints.at(2).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];;
-//                }
-//                else
-//                {
-//                    Waypoints.at(2).at(i) = -configXML["Segment@"+num2Str(j+1)+"/VerticalAcceleration"];
-//                }
-//            }
-//        }
-//
-//        Waypoints.at(3).at(i) = Waypoints.at(3).at(i-1) + Waypoints.at(1).at(i) * MissionTimeStep;
-//
-//        if (getVerticalPhaseNumber(Waypoints.at(0).at(i)) == 5)
-//        {
-//            Waypoints.at(4).at(i) = configXML["Segment@"+num2Str(j+1)+"/VerticalSpeed"];
-//        }
-//        else
-//        {
-//            Waypoints.at(4).at(i) = Waypoints.at(4).at(i-1) + Waypoints.at(2).at(i) * MissionTimeStep;
-//        }
-//
-//        Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow(MissionTimeStep,2) + Waypoints.at(3).at(i) * MissionTimeStep + Waypoints.at(5).at(i-1);
-//        Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow(MissionTimeStep,2) + Waypoints.at(4).at(i) * MissionTimeStep + Waypoints.at(6).at(i-1);
     }
 
-
+    return Waypoints;
 
 
     const string waypoints_file = "Waypoints.csv";
@@ -730,12 +658,10 @@ void MissionAnalysis::calcMissionWaypoints()
     myRuntimeInfo->out << "Mission Profile is calculated and plotted" << endl;
 }
 
+void MissionAnalysis::doMissionAnalysis ()
+{
 
-
-//void MissionAnalysis::doMissionAnalysis()
-//{
-//    calcMissionWaypoints()
-//}
+}
 
 
 MissionAnalysis::~MissionAnalysis()
