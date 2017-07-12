@@ -1,5 +1,7 @@
 #include "MissionAnalysis.h"
 #include "functions.h"
+#include "Aerodynamics.h"
+#include "BladeElementTheory.h"
 
 
 /** Analysis of Power and Energy Consumption **/
@@ -658,10 +660,80 @@ vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
     return Waypoints;
 }
 
+double MissionAnalysis::getPower(Propeller myProp, double v_hor, double v_vert, double altitude, double a_hor, double a_vert, double m, double MTOW)
+{
+    Aerodynamics myAero;
+    BladeElementTheory myBET(myProp);
+
+    vector<double> iterateThrustAndDragResults = myAero.iterateThrustAndDrag(v_hor, v_vert, a_hor, a_vert, m, MTOW, altitude); // alpha, drag, delta, thrust
+    double Power = myBET.calcBET(v_hor, v_vert, altitude, iterateThrustAndDragResults.at(3), iterateThrustAndDragResults.at(2));
+
+    return Power;
+}
+
 void MissionAnalysis::doMissionAnalysis ()
 {
+    myRuntimeInfo->out << "Performing Mission Analysis" << endl;
+    Propeller myProp("TestProp.csv","TestAirfoil.csv");
 
+    for (int i = 0; i < Waypoints.at(0).size(); i++)
+    {
+        double currentTime = Waypoints.at(0).at(i);
+        double currentHorizontalAcceleration = Waypoints.at(1).at(i);
+        double currentVerticalAcceleration = Waypoints.at(2).at(i);
+        double currentHorizontalVelocity = Waypoints.at(3).at(i);
+        double currentVerticalVelocity = Waypoints.at(4).at(i);
+        double currentHorizontalPosition = Waypoints.at(5).at(i);
+        double currentVerticalPosition = Waypoints.at(6).at(i);
+
+        double m = 10; // hier getMass einfügen
+        double MTOW = 15;
+
+        double currentPower = getPower(myProp, currentHorizontalVelocity, currentVerticalVelocity, currentVerticalPosition, currentHorizontalAcceleration, currentVerticalAcceleration, m, MTOW);
+        cout << currentPower << endl;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 MissionAnalysis::~MissionAnalysis()

@@ -5,6 +5,7 @@
 #include "node.h"
 #include "functions.h"
 #include "Segment.h"
+#include "Propeller.h"
 
 using namespace std;
 
@@ -14,7 +15,6 @@ class MissionAnalysis
 
         vector<vector<double>> Segments;
         vector<double> SegmentsTime;
-        //vector<double> SegmentsTimeVert;
 
         double MissionTime;
 
@@ -25,13 +25,15 @@ class MissionAnalysis
         virtual ~MissionAnalysis();
 
         void calcMissionSegments();
-        void calcMissionWaypoints();
+        vector<vector<double>> calcMissionWaypoints();
         void calcMissionTime();
         void calcSegmentsTimeAndWay();
 
         int getSegmentNumber(double currentTime);
         int getVerticalPhaseNumber(double currentTime);
         int getHorizontalPhaseNumber(double currentTime);
+        void doMissionAnalysis();
+        double getPower(Propeller myProp, double v_hor, double v_vert, double altitude, double a_hor, double a_vert, double m, double MTOW);
 
         bool LastSegment;
 
