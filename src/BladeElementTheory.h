@@ -10,8 +10,10 @@
 class BladeElementTheory
 {
     public:
-        BladeElementTheory();
+        BladeElementTheory(Propeller &myProp);
         virtual ~BladeElementTheory();
+
+        Propeller *myPropPt;
 
         double v_res;
         double alpha;
@@ -37,7 +39,7 @@ class BladeElementTheory
 
         double Power;
 
-        void calcBET(double v_hor, double v_vert, double altitude, double thrust, double delta);
+        double calcBET(double v_hor, double v_vert, double altitude, double thrust, double delta);
 
     protected:
 
