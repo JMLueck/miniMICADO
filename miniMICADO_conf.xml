@@ -20,7 +20,7 @@
 		<PowerDensity Desc="in kW/kg">2.758</PowerDensity> 
 	</PowertrainSettings>
 	<DesignMissionSettings> 
-		<IterationTimeFactor Desc="in sec">100</IterationTimeFactor>
+		<IterationTimeFactor Desc="in sec">10</IterationTimeFactor>
 		<Segments>
 			<NumberOfSegments>15</NumberOfSegments>
 			<Segment ID="1">

@@ -1,0 +1,738 @@
+*******************************************************************************
+06.07.2017 15:43:10 - Starte miniMICADO
+*******************************************************************************
+06.07.2017 15:44:22 - Starte miniMICADO
+06.07.2017 15:44:32 - ERROR: CreateProcess failed (ErrorCode: 2) on process: C:\Program Files (x86)\gnuplot\bin\gnuplot.exe -e "set datafile separator ',''" -e "set terminal wxt size 1200,600" -e "set autoscale" -e "set xtic auto" -e "set ytic auto" -e "set terminal png size 2600,1500 font 'Arial,18'" -e "set output 'C:/Users/Sebastian/Desktop/HiWi ILR/miniMICADO/Waypoints_plot.png'" -e "set multiplot layout 5,3 columnsfirst scale 1,0.9 font ',10'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Vert. Position'" -e "plot'Waypoints.csv' using 6:7 title 'Missionsprofil'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Hor. Geschwindigkeit'" -e "plot'Waypoints.csv' using 6:4 title 'Horizontale Geschwindigkeit'" -e "set xlabel 'Vertikale Position'" -e "set ylabel 'Vert. Geschwindigkeit'" -e "plot'Waypoints.csv' using 7:5 title 'Vertikale Geschwindigkeit'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Hor. Beschleunigung'" -e "plot'Waypoints.csv' using 6:2 title 'Horizontale Beschleunigung'" -e "set xlabel 'Vertikale Position'" -e "set ylabel 'Vert. Beschleunigung'" -e "plot'Waypoints.csv' using 7:3 title 'Vertikale Beschleunigung'" -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Position'" -e "plot'Waypoints.csv' using 1:6 title 'Horizontale Position'" -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Geschwindigkeit'" -e "plot'Waypoints.csv' using 1:4 title 'Horizontale Geschwindigkeit'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Beschleunigung'" -e "plot'Waypoints.csv' using 1:2 title 'Horizontale Beschleunigung'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Position'" -e "plot'Waypoints.csv' using 1:7 title 'Vertikale Position'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Geschwindigkeit'" -e "plot'Waypoints.csv' using 1:5 title 'Vertikale Geschwindigkeit'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Beschleunigung'" -e "plot'Waypoints.csv' using 1:3 title 'Vertikale Beschleunigung'" -e "unset multiplot" 
+*******************************************************************************
+06.07.2017 15:45:19 - Starte miniMICADO
+06.07.2017 15:45:29 - ERROR: CreateProcess failed (ErrorCode: 2) on process: C:\Program Files (x86)\gnuplot\bin\gnuplot.exe -e "set datafile separator ',''" -e "set terminal wxt size 1200,600" -e "set autoscale" -e "set xtic auto" -e "set ytic auto" -e "set terminal png size 2600,1500 font 'Arial,18'" -e "set output 'C:/Users/Sebastian/Desktop/HiWi ILR/miniMICADO/Waypoints_plot.png'" -e "set multiplot layout 5,3 columnsfirst scale 1,0.9 font ',10'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Vert. Position'" -e "plot'Waypoints.csv' using 6:7 title 'Missionsprofil'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Hor. Geschwindigkeit'" -e "plot'Waypoints.csv' using 6:4 title 'Horizontale Geschwindigkeit'" -e "set xlabel 'Vertikale Position'" -e "set ylabel 'Vert. Geschwindigkeit'" -e "plot'Waypoints.csv' using 7:5 title 'Vertikale Geschwindigkeit'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Hor. Beschleunigung'" -e "plot'Waypoints.csv' using 6:2 title 'Horizontale Beschleunigung'" -e "set xlabel 'Vertikale Position'" -e "set ylabel 'Vert. Beschleunigung'" -e "plot'Waypoints.csv' using 7:3 title 'Vertikale Beschleunigung'" -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Position'" -e "plot'Waypoints.csv' using 1:6 title 'Horizontale Position'" -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Geschwindigkeit'" -e "plot'Waypoints.csv' using 1:4 title 'Horizontale Geschwindigkeit'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Beschleunigung'" -e "plot'Waypoints.csv' using 1:2 title 'Horizontale Beschleunigung'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Position'" -e "plot'Waypoints.csv' using 1:7 title 'Vertikale Position'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Geschwindigkeit'" -e "plot'Waypoints.csv' using 1:5 title 'Vertikale Geschwindigkeit'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Beschleunigung'" -e "plot'Waypoints.csv' using 1:3 title 'Vertikale Beschleunigung'" -e "unset multiplot" 
+*******************************************************************************
+06.07.2017 15:46:21 - Starte miniMICADO
+06.07.2017 15:46:31 - ERROR: CreateProcess failed (ErrorCode: 2) on process: gnuplot\gnuplot.exe -e "set datafile separator ',''" -e "set terminal wxt size 1200,600" -e "set autoscale" -e "set xtic auto" -e "set ytic auto" -e "set terminal png size 2600,1500 font 'Arial,18'" -e "set output 'C:/Users/Sebastian/Desktop/HiWi ILR/miniMICADO/Waypoints_plot.png'" -e "set multiplot layout 5,3 columnsfirst scale 1,0.9 font ',10'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Vert. Position'" -e "plot'Waypoints.csv' using 6:7 title 'Missionsprofil'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Hor. Geschwindigkeit'" -e "plot'Waypoints.csv' using 6:4 title 'Horizontale Geschwindigkeit'" -e "set xlabel 'Vertikale Position'" -e "set ylabel 'Vert. Geschwindigkeit'" -e "plot'Waypoints.csv' using 7:5 title 'Vertikale Geschwindigkeit'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Hor. Beschleunigung'" -e "plot'Waypoints.csv' using 6:2 title 'Horizontale Beschleunigung'" -e "set xlabel 'Vertikale Position'" -e "set ylabel 'Vert. Beschleunigung'" -e "plot'Waypoints.csv' using 7:3 title 'Vertikale Beschleunigung'" -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Position'" -e "plot'Waypoints.csv' using 1:6 title 'Horizontale Position'" -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Geschwindigkeit'" -e "plot'Waypoints.csv' using 1:4 title 'Horizontale Geschwindigkeit'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Beschleunigung'" -e "plot'Waypoints.csv' using 1:2 title 'Horizontale Beschleunigung'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Position'" -e "plot'Waypoints.csv' using 1:7 title 'Vertikale Position'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Geschwindigkeit'" -e "plot'Waypoints.csv' using 1:5 title 'Vertikale Geschwindigkeit'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Beschleunigung'" -e "plot'Waypoints.csv' using 1:3 title 'Vertikale Beschleunigung'" -e "unset multiplot" 
+*******************************************************************************
+06.07.2017 15:47:43 - Starte miniMICADO
+*******************************************************************************
+06.07.2017 15:47:49 - Starte miniMICADO
+06.07.2017 15:47:59 - ERROR: CreateProcess failed (ErrorCode: 2) on process: gnuplot\gnuplot.exe -e "set datafile separator ',''" -e "set terminal wxt size 1200,600" -e "set autoscale" -e "set xtic auto" -e "set ytic auto" -e "set terminal png size 2600,1500 font 'Arial,18'" -e "set output 'Waypoints_plot.png'" -e "set multiplot layout 5,3 columnsfirst scale 1,0.9 font ',10'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Vert. Position'" -e "plot'Waypoints.csv' using 6:7 title 'Missionsprofil'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Hor. Geschwindigkeit'" -e "plot'Waypoints.csv' using 6:4 title 'Horizontale Geschwindigkeit'" -e "set xlabel 'Vertikale Position'" -e "set ylabel 'Vert. Geschwindigkeit'" -e "plot'Waypoints.csv' using 7:5 title 'Vertikale Geschwindigkeit'" -e "set xlabel 'Horizontale Position'" -e "set ylabel 'Hor. Beschleunigung'" -e "plot'Waypoints.csv' using 6:2 title 'Horizontale Beschleunigung'" -e "set xlabel 'Vertikale Position'" -e "set ylabel 'Vert. Beschleunigung'" -e "plot'Waypoints.csv' using 7:3 title 'Vertikale Beschleunigung'" -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Position'" -e "plot'Waypoints.csv' using 1:6 title 'Horizontale Position'" -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Geschwindigkeit'" -e "plot'Waypoints.csv' using 1:4 title 'Horizontale Geschwindigkeit'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Hor. Beschleunigung'" -e "plot'Waypoints.csv' using 1:2 title 'Horizontale Beschleunigung'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Position'" -e "plot'Waypoints.csv' using 1:7 title 'Vertikale Position'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Geschwindigkeit'" -e "plot'Waypoints.csv' using 1:5 title 'Vertikale Geschwindigkeit'" -e clear -e "set xlabel 'Zeit'" -e "set ylabel 'Vert. Beschleunigung'" -e "plot'Waypoints.csv' using 1:3 title 'Vertikale Beschleunigung'" -e "unset multiplot" 
+*******************************************************************************
+06.07.2017 15:49:07 - Starte miniMICADO
+*******************************************************************************
+06.07.2017 15:50:12 - Starte miniMICADO
+*******************************************************************************
+06.07.2017 15:50:53 - Starte miniMICADO
+*******************************************************************************
+06.07.2017 16:00:45 - Starte miniMICADO
+*******************************************************************************
+06.07.2017 16:01:24 - Starte miniMICADO
+*******************************************************************************
+06.07.2017 16:01:55 - Starte miniMICADO
+*******************************************************************************
+06.07.2017 16:04:22 - Starte miniMICADO
+06.07.2017 16:04:22 - Calculating Mission Profile
+*******************************************************************************
+06.07.2017 16:06:31 - Starte miniMICADO
+06.07.2017 16:06:31 - Calculating Mission Profile
+*******************************************************************************
+06.07.2017 16:08:27 - Starte miniMICADO
+06.07.2017 16:08:27 - Calculating Mission Profile
+*******************************************************************************
+06.07.2017 16:09:08 - Starte miniMICADO
+06.07.2017 16:09:08 - Calculating Mission Profile
+*******************************************************************************
+06.07.2017 16:10:59 - Starte miniMICADO
+06.07.2017 16:10:59 - Calculating Mission Profile
+*******************************************************************************
+06.07.2017 16:15:43 - Starte miniMICADO
+06.07.2017 16:15:43 - Calculating Mission Profile
+*******************************************************************************
+06.07.2017 16:18:00 - Starte miniMICADO
+06.07.2017 16:18:00 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:23:36 - Starte miniMICADO
+07.07.2017 11:23:36 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:24:19 - Starte miniMICADO
+07.07.2017 11:24:19 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:24:55 - Starte miniMICADO
+07.07.2017 11:24:55 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:25:33 - Starte miniMICADO
+07.07.2017 11:25:33 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:25:58 - Starte miniMICADO
+07.07.2017 11:25:58 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:26:32 - Starte miniMICADO
+07.07.2017 11:26:32 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:27:50 - Starte miniMICADO
+07.07.2017 11:27:50 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:28:31 - Starte miniMICADO
+07.07.2017 11:28:31 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:40:56 - Starte miniMICADO
+07.07.2017 11:40:56 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:44:59 - Starte miniMICADO
+07.07.2017 11:44:59 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:46:03 - Starte miniMICADO
+07.07.2017 11:46:03 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:47:25 - Starte miniMICADO
+07.07.2017 11:47:25 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:48:13 - Starte miniMICADO
+07.07.2017 11:48:13 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:49:34 - Starte miniMICADO
+07.07.2017 11:49:34 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:51:49 - Starte miniMICADO
+07.07.2017 11:51:49 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:53:46 - Starte miniMICADO
+07.07.2017 11:53:46 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:54:13 - Starte miniMICADO
+07.07.2017 11:54:13 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:58:07 - Starte miniMICADO
+07.07.2017 11:58:07 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 11:59:54 - Starte miniMICADO
+07.07.2017 11:59:54 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 12:02:11 - Starte miniMICADO
+07.07.2017 12:02:11 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 12:02:21 - Starte miniMICADO
+07.07.2017 12:02:21 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 12:03:52 - Starte miniMICADO
+07.07.2017 12:03:52 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 13:23:00 - Starte miniMICADO
+07.07.2017 13:23:00 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 13:23:28 - Starte miniMICADO
+07.07.2017 13:23:28 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:22:10 - Starte miniMICADO
+07.07.2017 15:22:10 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:23:48 - Starte miniMICADO
+07.07.2017 15:23:48 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:24:44 - Starte miniMICADO
+07.07.2017 15:24:44 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:25:43 - Starte miniMICADO
+07.07.2017 15:25:43 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:28:07 - Starte miniMICADO
+07.07.2017 15:28:07 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:29:31 - Starte miniMICADO
+07.07.2017 15:29:31 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:30:33 - Starte miniMICADO
+07.07.2017 15:30:33 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:32:14 - Starte miniMICADO
+07.07.2017 15:32:14 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:34:16 - Starte miniMICADO
+07.07.2017 15:34:16 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:37:05 - Starte miniMICADO
+07.07.2017 15:37:05 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:38:01 - Starte miniMICADO
+07.07.2017 15:38:01 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:38:36 - Starte miniMICADO
+07.07.2017 15:38:36 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:41:13 - Starte miniMICADO
+07.07.2017 15:41:13 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:42:09 - Starte miniMICADO
+07.07.2017 15:42:09 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:42:50 - Starte miniMICADO
+07.07.2017 15:42:50 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:45:59 - Starte miniMICADO
+07.07.2017 15:45:59 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:46:43 - Starte miniMICADO
+07.07.2017 15:46:43 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:47:45 - Starte miniMICADO
+07.07.2017 15:47:45 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:48:12 - Starte miniMICADO
+07.07.2017 15:48:12 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:48:37 - Starte miniMICADO
+07.07.2017 15:48:37 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:49:38 - Starte miniMICADO
+07.07.2017 15:49:38 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:50:08 - Starte miniMICADO
+07.07.2017 15:50:08 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:50:41 - Starte miniMICADO
+07.07.2017 15:50:41 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:51:00 - Starte miniMICADO
+07.07.2017 15:51:00 - Calculating Mission Profile
+*******************************************************************************
+07.07.2017 15:53:13 - Starte miniMICADO
+07.07.2017 15:53:13 - Calculating Mission Profile
+07.07.2017 15:53:15 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 15:37:10 - Starte miniMICADO
+10.07.2017 15:37:10 - Calculating Mission Profile
+10.07.2017 15:37:12 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 15:37:59 - Starte miniMICADO
+10.07.2017 15:37:59 - Calculating Mission Profile
+10.07.2017 15:38:01 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 15:38:15 - Starte miniMICADO
+10.07.2017 15:38:15 - Calculating Mission Profile
+10.07.2017 15:38:16 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 15:38:30 - Starte miniMICADO
+10.07.2017 15:38:30 - Calculating Mission Profile
+10.07.2017 15:38:31 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 15:58:13 - Starte miniMICADO
+10.07.2017 15:58:13 - Calculating Mission Profile
+10.07.2017 15:58:15 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 15:59:51 - Starte miniMICADO
+10.07.2017 15:59:51 - Calculating Mission Profile
+10.07.2017 15:59:53 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 16:01:29 - Starte miniMICADO
+10.07.2017 16:01:29 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:02:08 - Starte miniMICADO
+10.07.2017 16:02:08 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:03:56 - Starte miniMICADO
+10.07.2017 16:03:56 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:05:42 - Starte miniMICADO
+10.07.2017 16:05:42 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:09:39 - Starte miniMICADO
+10.07.2017 16:09:39 - Calculating Mission Profile
+10.07.2017 16:09:41 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 16:12:03 - Starte miniMICADO
+10.07.2017 16:12:03 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:12:23 - Starte miniMICADO
+10.07.2017 16:12:23 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:12:56 - Starte miniMICADO
+10.07.2017 16:12:56 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:14:01 - Starte miniMICADO
+10.07.2017 16:14:01 - Calculating Mission Profile
+10.07.2017 16:14:03 - Mission Profile is calculated and plotted
+*******************************************************************************
+10.07.2017 16:15:11 - Starte miniMICADO
+10.07.2017 16:15:11 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:15:53 - Starte miniMICADO
+10.07.2017 16:15:53 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:16:26 - Starte miniMICADO
+10.07.2017 16:16:26 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:20:56 - Starte miniMICADO
+10.07.2017 16:20:56 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:21:11 - Starte miniMICADO
+10.07.2017 16:21:11 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:30:46 - Starte miniMICADO
+10.07.2017 16:30:46 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:31:20 - Starte miniMICADO
+10.07.2017 16:31:20 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:31:35 - Starte miniMICADO
+10.07.2017 16:31:35 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:34:02 - Starte miniMICADO
+10.07.2017 16:34:02 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:34:12 - Starte miniMICADO
+10.07.2017 16:34:12 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:34:22 - Starte miniMICADO
+10.07.2017 16:34:22 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:39:35 - Starte miniMICADO
+10.07.2017 16:39:35 - Calculating Mission Profile
+*******************************************************************************
+10.07.2017 16:40:05 - Starte miniMICADO
+10.07.2017 16:40:05 - Calculating Mission Profile
+10.07.2017 16:40:08 - Mission Profile is calculated and plotted
+*******************************************************************************
+11.07.2017 14:58:31 - Starte miniMICADO
+11.07.2017 14:58:31 - Calculating Mission Profile
+11.07.2017 14:58:34 - Mission Profile is calculated and plotted
+*******************************************************************************
+11.07.2017 14:59:20 - Starte miniMICADO
+11.07.2017 14:59:20 - Calculating Mission Profile
+11.07.2017 14:59:23 - Mission Profile is calculated and plotted
+11.07.2017 14:59:23 - Performing Mission Analysis
+*******************************************************************************
+11.07.2017 15:33:14 - Starte miniMICADO
+11.07.2017 15:33:14 - Calculating Mission Profile
+11.07.2017 15:33:17 - Mission Profile is calculated and plotted
+11.07.2017 15:33:17 - Performing Mission Analysis
+11.07.2017 15:33:17 - Read Propeller Geometry of TestProp.csv
+11.07.2017 15:33:17 - ERROR: Could not open TestProp.csv
+*******************************************************************************
+11.07.2017 15:34:02 - Starte miniMICADO
+11.07.2017 15:34:02 - Calculating Mission Profile
+11.07.2017 15:34:05 - Mission Profile is calculated and plotted
+11.07.2017 15:34:05 - Performing Mission Analysis
+11.07.2017 15:34:05 - Read Propeller Geometry of TestProp.csv
+11.07.2017 15:34:05 - Read Propeller Airfoil of TestAirfoil.csv
+11.07.2017 15:34:13 - Read Propeller Geometry of TestProp.csv
+11.07.2017 15:34:13 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+11.07.2017 15:42:03 - Starte miniMICADO
+11.07.2017 15:42:03 - Calculating Mission Profile
+11.07.2017 15:42:05 - Mission Profile is calculated and plotted
+11.07.2017 15:42:05 - Performing Mission Analysis
+11.07.2017 15:42:05 - Read Propeller Geometry of TestProp.csv
+11.07.2017 15:42:05 - Read Propeller Airfoil of TestAirfoil.csv
+11.07.2017 15:42:13 - Read Propeller Geometry of TestProp.csv
+11.07.2017 15:42:13 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+11.07.2017 16:55:18 - Starte miniMICADO
+11.07.2017 16:55:18 - Calculating Mission Profile
+11.07.2017 16:55:21 - Mission Profile is calculated and plotted
+11.07.2017 16:55:21 - Performing Mission Analysis
+11.07.2017 16:55:21 - Read Propeller Geometry of TestProp.csv
+11.07.2017 16:55:21 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+11.07.2017 17:14:06 - Starte miniMICADO
+11.07.2017 17:14:06 - Calculating Mission Profile
+11.07.2017 17:14:07 - Mission Profile is calculated and plotted
+*******************************************************************************
+12.07.2017 09:06:36 - Starte miniMICADO
+12.07.2017 09:06:36 - Calculating Mission Profile
+12.07.2017 09:06:40 - Mission Profile is calculated and plotted
+12.07.2017 09:06:40 - Performing Mission Analysis
+12.07.2017 09:06:40 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:06:40 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:08:06 - Starte miniMICADO
+12.07.2017 09:08:06 - Calculating Mission Profile
+12.07.2017 09:08:09 - Mission Profile is calculated and plotted
+12.07.2017 09:08:09 - Performing Mission Analysis
+12.07.2017 09:08:09 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:08:09 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:09:24 - Starte miniMICADO
+12.07.2017 09:09:24 - Calculating Mission Profile
+12.07.2017 09:09:26 - Mission Profile is calculated and plotted
+12.07.2017 09:09:26 - Performing Mission Analysis
+12.07.2017 09:09:26 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:09:26 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:09:50 - Starte miniMICADO
+12.07.2017 09:09:50 - Calculating Mission Profile
+12.07.2017 09:09:52 - Mission Profile is calculated and plotted
+12.07.2017 09:09:52 - Performing Mission Analysis
+12.07.2017 09:09:52 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:09:52 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:10:08 - Starte miniMICADO
+12.07.2017 09:10:08 - Calculating Mission Profile
+12.07.2017 09:10:10 - Mission Profile is calculated and plotted
+12.07.2017 09:10:10 - Performing Mission Analysis
+12.07.2017 09:10:11 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:10:11 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:10:24 - Starte miniMICADO
+12.07.2017 09:10:24 - Calculating Mission Profile
+12.07.2017 09:10:26 - Mission Profile is calculated and plotted
+12.07.2017 09:10:26 - Performing Mission Analysis
+12.07.2017 09:10:26 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:10:26 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:10:56 - Starte miniMICADO
+12.07.2017 09:10:56 - Calculating Mission Profile
+12.07.2017 09:10:59 - Mission Profile is calculated and plotted
+12.07.2017 09:10:59 - Performing Mission Analysis
+12.07.2017 09:10:59 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:10:59 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:24:07 - Starte miniMICADO
+12.07.2017 09:24:07 - Calculating Mission Profile
+12.07.2017 09:24:09 - Mission Profile is calculated and plotted
+12.07.2017 09:24:09 - Performing Mission Analysis
+12.07.2017 09:24:09 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:24:09 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:25:07 - Starte miniMICADO
+12.07.2017 09:25:07 - Calculating Mission Profile
+12.07.2017 09:25:09 - Mission Profile is calculated and plotted
+12.07.2017 09:25:09 - Performing Mission Analysis
+12.07.2017 09:25:09 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:25:09 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 09:25:38 - Starte miniMICADO
+12.07.2017 09:25:38 - Calculating Mission Profile
+12.07.2017 09:25:41 - Mission Profile is calculated and plotted
+12.07.2017 09:25:41 - Performing Mission Analysis
+12.07.2017 09:25:41 - Read Propeller Geometry of TestProp.csv
+12.07.2017 09:25:41 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:29:48 - Starte miniMICADO
+12.07.2017 14:29:48 - Calculating Mission Profile
+12.07.2017 14:29:50 - Mission Profile is calculated and plotted
+12.07.2017 14:29:50 - Performing Mission Analysis
+12.07.2017 14:29:50 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:29:50 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:30:08 - Starte miniMICADO
+12.07.2017 14:30:08 - Calculating Mission Profile
+12.07.2017 14:30:11 - Mission Profile is calculated and plotted
+12.07.2017 14:30:11 - Performing Mission Analysis
+12.07.2017 14:30:11 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:30:11 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:30:34 - Starte miniMICADO
+12.07.2017 14:30:34 - Calculating Mission Profile
+12.07.2017 14:30:37 - Mission Profile is calculated and plotted
+12.07.2017 14:30:37 - Performing Mission Analysis
+12.07.2017 14:30:37 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:30:37 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:30:51 - Starte miniMICADO
+12.07.2017 14:30:51 - Calculating Mission Profile
+12.07.2017 14:30:54 - Mission Profile is calculated and plotted
+12.07.2017 14:30:54 - Performing Mission Analysis
+12.07.2017 14:30:54 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:30:54 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:34:47 - Starte miniMICADO
+12.07.2017 14:34:47 - Calculating Mission Profile
+12.07.2017 14:34:49 - Mission Profile is calculated and plotted
+12.07.2017 14:34:49 - Performing Mission Analysis
+12.07.2017 14:34:49 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:34:49 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:35:04 - Starte miniMICADO
+12.07.2017 14:35:04 - Calculating Mission Profile
+12.07.2017 14:35:06 - Mission Profile is calculated and plotted
+12.07.2017 14:35:06 - Performing Mission Analysis
+12.07.2017 14:35:06 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:35:06 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:39:29 - Starte miniMICADO
+12.07.2017 14:39:29 - Calculating Mission Profile
+12.07.2017 14:39:31 - Mission Profile is calculated and plotted
+12.07.2017 14:39:31 - Performing Mission Analysis
+12.07.2017 14:39:31 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:39:31 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:40:00 - Starte miniMICADO
+12.07.2017 14:40:00 - Calculating Mission Profile
+12.07.2017 14:40:03 - Mission Profile is calculated and plotted
+12.07.2017 14:40:03 - Performing Mission Analysis
+12.07.2017 14:40:03 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:40:03 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:40:18 - Starte miniMICADO
+12.07.2017 14:40:18 - Calculating Mission Profile
+12.07.2017 14:40:20 - Mission Profile is calculated and plotted
+12.07.2017 14:40:20 - Performing Mission Analysis
+12.07.2017 14:40:20 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:40:20 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:40:39 - Starte miniMICADO
+12.07.2017 14:40:39 - Calculating Mission Profile
+12.07.2017 14:40:41 - Mission Profile is calculated and plotted
+12.07.2017 14:40:41 - Performing Mission Analysis
+12.07.2017 14:40:41 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:40:41 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:40:56 - Starte miniMICADO
+12.07.2017 14:40:56 - Calculating Mission Profile
+12.07.2017 14:40:58 - Mission Profile is calculated and plotted
+12.07.2017 14:40:58 - Performing Mission Analysis
+12.07.2017 14:40:58 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:40:58 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:42:13 - Starte miniMICADO
+12.07.2017 14:42:13 - Calculating Mission Profile
+12.07.2017 14:42:15 - Mission Profile is calculated and plotted
+12.07.2017 14:42:15 - Performing Mission Analysis
+12.07.2017 14:42:15 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:42:15 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:42:40 - Starte miniMICADO
+12.07.2017 14:42:40 - Calculating Mission Profile
+12.07.2017 14:42:43 - Mission Profile is calculated and plotted
+12.07.2017 14:42:43 - Performing Mission Analysis
+12.07.2017 14:42:43 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:42:43 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:53:14 - Starte miniMICADO
+12.07.2017 14:53:14 - Calculating Mission Profile
+12.07.2017 14:53:17 - Mission Profile is calculated and plotted
+12.07.2017 14:53:17 - Performing Mission Analysis
+12.07.2017 14:53:17 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:53:17 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:53:28 - Starte miniMICADO
+12.07.2017 14:53:28 - Calculating Mission Profile
+12.07.2017 14:53:31 - Mission Profile is calculated and plotted
+12.07.2017 14:53:31 - Performing Mission Analysis
+12.07.2017 14:53:31 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:53:31 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 14:53:41 - Starte miniMICADO
+12.07.2017 14:53:41 - Calculating Mission Profile
+12.07.2017 14:53:43 - Mission Profile is calculated and plotted
+12.07.2017 14:53:43 - Performing Mission Analysis
+12.07.2017 14:53:43 - Read Propeller Geometry of TestProp.csv
+12.07.2017 14:53:43 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 15:45:48 - Starte miniMICADO
+12.07.2017 15:45:48 - Calculating Mission Profile
+12.07.2017 15:45:51 - Mission Profile is calculated and plotted
+12.07.2017 15:45:51 - Performing Mission Analysis
+12.07.2017 15:45:51 - Read Propeller Geometry of TestProp.csv
+12.07.2017 15:45:51 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 16:48:59 - Starte miniMICADO
+12.07.2017 16:48:59 - Calculating Mission Profile
+12.07.2017 16:49:02 - Mission Profile is calculated and plotted
+12.07.2017 16:49:02 - Performing Mission Analysis
+12.07.2017 16:49:02 - Read Propeller Geometry of TestProp.csv
+12.07.2017 16:49:02 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 16:51:24 - Starte miniMICADO
+12.07.2017 16:51:24 - Calculating Mission Profile
+12.07.2017 16:51:27 - Mission Profile is calculated and plotted
+12.07.2017 16:51:27 - Performing Mission Analysis
+12.07.2017 16:51:27 - Read Propeller Geometry of TestProp.csv
+12.07.2017 16:51:27 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 16:53:12 - Starte miniMICADO
+12.07.2017 16:53:12 - Calculating Mission Profile
+12.07.2017 16:53:14 - Mission Profile is calculated and plotted
+12.07.2017 16:53:14 - Performing Mission Analysis
+12.07.2017 16:53:14 - Read Propeller Geometry of TestProp.csv
+12.07.2017 16:53:14 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 16:53:31 - Starte miniMICADO
+12.07.2017 16:53:31 - Calculating Mission Profile
+12.07.2017 16:53:33 - Mission Profile is calculated and plotted
+12.07.2017 16:53:33 - Performing Mission Analysis
+12.07.2017 16:53:33 - Read Propeller Geometry of TestProp.csv
+12.07.2017 16:53:33 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 16:53:50 - Starte miniMICADO
+12.07.2017 16:53:50 - Calculating Mission Profile
+12.07.2017 16:53:53 - Mission Profile is calculated and plotted
+12.07.2017 16:53:53 - Performing Mission Analysis
+12.07.2017 16:53:53 - Read Propeller Geometry of TestProp.csv
+12.07.2017 16:53:53 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 16:59:20 - Starte miniMICADO
+12.07.2017 16:59:20 - Calculating Mission Profile
+12.07.2017 16:59:22 - Mission Profile is calculated and plotted
+12.07.2017 16:59:22 - Performing Mission Analysis
+12.07.2017 16:59:22 - Read Propeller Geometry of TestProp.csv
+12.07.2017 16:59:22 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 16:59:43 - Starte miniMICADO
+12.07.2017 16:59:43 - Calculating Mission Profile
+12.07.2017 16:59:45 - Mission Profile is calculated and plotted
+12.07.2017 16:59:45 - Performing Mission Analysis
+12.07.2017 16:59:45 - Read Propeller Geometry of TestProp.csv
+12.07.2017 16:59:45 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 17:00:02 - Starte miniMICADO
+12.07.2017 17:00:02 - Calculating Mission Profile
+12.07.2017 17:00:04 - Mission Profile is calculated and plotted
+12.07.2017 17:00:04 - Performing Mission Analysis
+12.07.2017 17:00:04 - Read Propeller Geometry of TestProp.csv
+12.07.2017 17:00:04 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+12.07.2017 17:00:39 - Starte miniMICADO
+12.07.2017 17:00:39 - Calculating Mission Profile
+12.07.2017 17:00:41 - Mission Profile is calculated and plotted
+12.07.2017 17:00:41 - Performing Mission Analysis
+12.07.2017 17:00:41 - Read Propeller Geometry of TestProp.csv
+12.07.2017 17:00:41 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 09:00:40 - Starte miniMICADO
+13.07.2017 09:00:40 - Calculating Mission Profile
+13.07.2017 09:00:42 - Mission Profile is calculated and plotted
+13.07.2017 09:00:42 - Performing Mission Analysis
+13.07.2017 09:00:42 - Read Propeller Geometry of TestProp.csv
+13.07.2017 09:00:42 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 09:01:19 - Starte miniMICADO
+13.07.2017 09:01:19 - Calculating Mission Profile
+13.07.2017 09:01:21 - Mission Profile is calculated and plotted
+13.07.2017 09:01:21 - Performing Mission Analysis
+13.07.2017 09:01:21 - Read Propeller Geometry of TestProp.csv
+13.07.2017 09:01:21 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 09:24:49 - Starte miniMICADO
+13.07.2017 09:24:49 - Calculating Mission Profile
+13.07.2017 09:24:50 - Mission Profile is calculated and plotted
+13.07.2017 09:24:50 - Performing Mission Analysis
+13.07.2017 09:24:50 - Read Propeller Geometry of TestProp.csv
+13.07.2017 09:24:50 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 09:26:25 - Starte miniMICADO
+13.07.2017 09:26:25 - Calculating Mission Profile
+13.07.2017 09:26:27 - Mission Profile is calculated and plotted
+13.07.2017 09:26:27 - Performing Mission Analysis
+13.07.2017 09:26:27 - Read Propeller Geometry of TestProp.csv
+13.07.2017 09:26:27 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 09:28:12 - Starte miniMICADO
+13.07.2017 09:28:12 - Calculating Mission Profile
+13.07.2017 09:28:14 - Mission Profile is calculated and plotted
+13.07.2017 09:28:14 - Performing Mission Analysis
+13.07.2017 09:28:14 - Read Propeller Geometry of TestProp.csv
+13.07.2017 09:28:14 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 10:28:09 - Starte miniMICADO
+13.07.2017 10:28:09 - Calculating Mission Profile
+13.07.2017 10:28:12 - Mission Profile is calculated and plotted
+13.07.2017 10:28:12 - Performing Mission Analysis
+13.07.2017 10:28:12 - Read Propeller Geometry of TestProp.csv
+13.07.2017 10:28:12 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 10:29:32 - Starte miniMICADO
+13.07.2017 10:29:32 - Calculating Mission Profile
+13.07.2017 10:29:32 - Mission Profile is calculated and plotted
+13.07.2017 10:29:32 - Performing Mission Analysis
+13.07.2017 10:29:32 - Read Propeller Geometry of TestProp.csv
+13.07.2017 10:29:32 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 10:35:32 - Starte miniMICADO
+13.07.2017 10:35:32 - Calculating Mission Profile
+13.07.2017 10:35:32 - Mission Profile is calculated and plotted
+13.07.2017 10:35:32 - Performing Mission Analysis
+13.07.2017 10:35:32 - Read Propeller Geometry of TestProp.csv
+13.07.2017 10:35:32 - Read Propeller Airfoil of TestAirfoil.csv
+13.07.2017 10:35:32 - Calculating Waypoint0/120
+13.07.2017 10:35:34 - Calculating Waypoint1/120
+13.07.2017 10:35:40 - Calculating Waypoint2/120
+*******************************************************************************
+13.07.2017 10:36:08 - Starte miniMICADO
+13.07.2017 10:36:08 - Calculating Mission Profile
+13.07.2017 10:36:08 - Mission Profile is calculated and plotted
+13.07.2017 10:36:08 - Performing Mission Analysis
+13.07.2017 10:36:08 - Read Propeller Geometry of TestProp.csv
+13.07.2017 10:36:08 - Read Propeller Airfoil of TestAirfoil.csv
+13.07.2017 10:36:08 - Calculating Waypoint 0/120
+13.07.2017 10:36:09 - Calculating Waypoint 1/120
+13.07.2017 10:36:15 - Calculating Waypoint 2/120
+*******************************************************************************
+13.07.2017 10:36:33 - Starte miniMICADO
+13.07.2017 10:36:33 - Calculating Mission Profile
+13.07.2017 10:36:33 - Mission Profile is calculated and plotted
+13.07.2017 10:36:33 - Performing Mission Analysis
+13.07.2017 10:36:33 - Read Propeller Geometry of TestProp.csv
+13.07.2017 10:36:33 - Read Propeller Airfoil of TestAirfoil.csv
+13.07.2017 10:36:33 - Calculating Waypoint 0/120
+13.07.2017 10:36:33 - Calculating Waypoint 1/120
+*******************************************************************************
+13.07.2017 10:37:55 - Starte miniMICADO
+13.07.2017 10:37:55 - Calculating Mission Profile
+13.07.2017 10:37:55 - Mission Profile is calculated and plotted
+13.07.2017 10:37:55 - Performing Mission Analysis
+13.07.2017 10:37:55 - Read Propeller Geometry of TestProp.csv
+13.07.2017 10:37:55 - Read Propeller Airfoil of TestAirfoil.csv
+13.07.2017 10:37:55 - Calculating Waypoint 0/120
+13.07.2017 10:37:57 - Calculating Waypoint 1/120
+13.07.2017 10:38:03 - Calculating Waypoint 2/120
+*******************************************************************************
+13.07.2017 10:38:14 - Starte miniMICADO
+13.07.2017 10:38:14 - Calculating Mission Profile
+13.07.2017 10:38:14 - Mission Profile is calculated and plotted
+13.07.2017 10:38:14 - Performing Mission Analysis
+13.07.2017 10:38:14 - Read Propeller Geometry of TestProp.csv
+13.07.2017 10:38:14 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 10:39:02 - Starte miniMICADO
+13.07.2017 10:39:02 - Calculating Mission Profile
+13.07.2017 10:39:02 - Mission Profile is calculated and plotted
+13.07.2017 10:39:02 - Performing Mission Analysis
+13.07.2017 10:39:02 - Read Propeller Geometry of TestProp.csv
+13.07.2017 10:39:02 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 12:16:29 - Starte miniMICADO
+13.07.2017 12:16:29 - Calculating Mission Profile
+13.07.2017 12:16:29 - Mission Profile is calculated and plotted
+13.07.2017 12:16:29 - Performing Mission Analysis
+13.07.2017 12:16:29 - Read Propeller Geometry of TestProp.csv
+13.07.2017 12:16:29 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 12:16:56 - Starte miniMICADO
+13.07.2017 12:16:56 - Calculating Mission Profile
+13.07.2017 12:16:56 - Mission Profile is calculated and plotted
+13.07.2017 12:16:56 - Performing Mission Analysis
+13.07.2017 12:16:56 - Read Propeller Geometry of TestProp.csv
+13.07.2017 12:16:56 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 12:17:17 - Starte miniMICADO
+13.07.2017 12:17:17 - Calculating Mission Profile
+13.07.2017 12:17:17 - Mission Profile is calculated and plotted
+13.07.2017 12:17:17 - Performing Mission Analysis
+13.07.2017 12:17:17 - Read Propeller Geometry of TestProp.csv
+13.07.2017 12:17:17 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 12:17:33 - Starte miniMICADO
+13.07.2017 12:17:33 - Calculating Mission Profile
+13.07.2017 12:17:33 - Mission Profile is calculated and plotted
+13.07.2017 12:17:33 - Performing Mission Analysis
+13.07.2017 12:17:33 - Read Propeller Geometry of TestProp.csv
+13.07.2017 12:17:33 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 12:51:02 - Starte miniMICADO
+13.07.2017 12:51:02 - Calculating Mission Profile
+13.07.2017 12:51:03 - Mission Profile is calculated and plotted
+13.07.2017 12:51:03 - Performing Mission Analysis
+13.07.2017 12:51:03 - Read Propeller Geometry of TestProp.csv
+13.07.2017 12:51:03 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 12:51:18 - Starte miniMICADO
+13.07.2017 12:51:18 - Calculating Mission Profile
+13.07.2017 12:51:18 - Mission Profile is calculated and plotted
+13.07.2017 12:51:18 - Performing Mission Analysis
+13.07.2017 12:51:18 - Read Propeller Geometry of TestProp.csv
+13.07.2017 12:51:18 - Read Propeller Airfoil of TestAirfoil.csv
+*******************************************************************************
+13.07.2017 13:35:37 - Starte miniMICADO
+13.07.2017 13:35:37 - Calculating Mission Profile
+13.07.2017 13:35:39 - Mission Profile is calculated and plotted
+13.07.2017 13:35:39 - Performing Mission Analysis
+13.07.2017 13:35:39 - Read Propeller Geometry of TestProp.csv
+13.07.2017 13:35:39 - Read Propeller Airfoil of TestAirfoil.csv
