@@ -3,7 +3,7 @@ reset
 term = 'svg'
 set terminal svg size 1280,960 enhanced font "Times, 12"
 set output "plots/Mission.svg
-set datafile separator ','
+set datafile separator ';'
 set key font "Times, 10" samplen 2
 set autoscale
 set xtic auto
