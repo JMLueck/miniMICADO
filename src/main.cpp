@@ -21,8 +21,9 @@ int main()
         node& configXML=aixml::openDocument("miniMICADO_conf.xml");
         myRuntimeInfo=new runtimeInfo(configXML,"miniMICADO");
 
+        myRuntimeInfo->out << "Calculating Mission Profile" << endl;
         MissionAnalysis myMissionAnalysis(configXML);
-
+        myMissionAnalysis.doMissionAnalysis();
 
 //        BladeElementTheory myBET;
 //        myBET.calcBET(3,20,100,100,3);

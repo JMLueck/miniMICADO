@@ -116,3 +116,124 @@
 1495456936 source:c:\users\lueckhof\desktop\minimicado\src\propeller.cpp
 	"Propeller.h"
 
+1499863167 source:c:\users\lueckhof\documents\github\minimicado\src\aerodynamics.cpp
+	"Aerodynamics.h"
+
+1499930139 c:\users\lueckhof\documents\github\minimicado\src\aerodynamics.h
+	<string>
+	<iostream>
+	<vector>
+	<fstream>
+	<cstdlib>
+	<sstream>
+	"tgmath.h"
+	"atmosphere.h"
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\lib\atmosphere\atmosphere.h
+	<iostream>
+	<string>
+	<math.h>
+
+1499934513 source:c:\users\lueckhof\documents\github\minimicado\src\bladeelementtheory.cpp
+	"BladeElementTheory.h"
+
+1499784476 c:\users\lueckhof\documents\github\minimicado\src\bladeelementtheory.h
+	<math.h>
+	"functions.h"
+	"atmosphere.h"
+	"Propeller.h"
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\lib\standardfiles\functions.h
+	<iostream>
+	<sstream>
+	<stdio.h>
+	<conio.h>
+	<algorithm>
+	<windows.h>
+	<string>
+	<math.h>
+	<sys/stat.h>
+	<tchar.h>
+	<ctype.h>
+	"runtimeInfo.h"
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\lib\standardfiles\runtimeinfo.h
+	<fstream>
+	<string>
+	<iomanip>
+	"node.h"
+	"time.h"
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\lib\aixml\node.h
+	<string>
+	<vector>
+	<map>
+	<limits>
+	<iostream>
+	<queue>
+	"tinyxml.h"
+	<sstream>
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\lib\aixml\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\lib\aixml\tinystr.h
+	<assert.h>
+	<string.h>
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\propeller.h
+	<string>
+	<iostream>
+	<vector>
+	<math.h>
+	"node.h"
+	"functions.h"
+
+1499777905 source:c:\users\lueckhof\documents\github\minimicado\src\main.cpp
+	<iostream>
+	<fstream>
+	"runtimeInfo.h"
+	"node.h"
+	"MissionAnalysis.h"
+	"Segment.h"
+	"Propeller.h"
+	"BladeElementTheory.h"
+
+1499931091 c:\users\lueckhof\documents\github\minimicado\src\missionanalysis.h
+	<vector>
+	"node.h"
+	"functions.h"
+	"Segment.h"
+	"Propeller.h"
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\segment.h
+	<math.h>
+	<vector>
+	"node.h"
+	"functions.h"
+
+1499348543 source:c:\users\lueckhof\documents\github\minimicado\src\massestimation.cpp
+	"MassEstimation.h"
+
+1499348543 c:\users\lueckhof\documents\github\minimicado\src\massestimation.h
+
+1499943074 source:c:\users\lueckhof\documents\github\minimicado\src\missionanalysis.cpp
+	"MissionAnalysis.h"
+	"functions.h"
+	"Aerodynamics.h"
+	"BladeElementTheory.h"
+
+1499930190 source:c:\users\lueckhof\documents\github\minimicado\src\propeller.cpp
+	"Propeller.h"
+
+1499348543 source:c:\users\lueckhof\documents\github\minimicado\src\segment.cpp
+	"Segment.h"
+

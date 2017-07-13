@@ -19,6 +19,7 @@ class MissionAnalysis
         double MissionTime;
 
         vector<vector<double>> Waypoints;
+        vector<vector<double>> MissionResults;
         map<string,Segment> SegmentMap;
 
         MissionAnalysis(node& configXML);
@@ -33,7 +34,6 @@ class MissionAnalysis
         int getVerticalPhaseNumber(double currentTime);
         int getHorizontalPhaseNumber(double currentTime);
         void doMissionAnalysis();
-        double getPower(Propeller myProp, double v_hor, double v_vert, double altitude, double a_hor, double a_vert, double m, double MTOW);
 
         bool LastSegment;
 

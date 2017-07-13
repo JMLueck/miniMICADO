@@ -88,7 +88,6 @@ double BladeElementTheory::calcBET(double v_hor, double v_vert, double altitude,
         {
             omega = omega + eps;
         }
-        cout << omega << endl;
     }
 
     Power = omega * Moment;

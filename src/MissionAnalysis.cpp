@@ -522,23 +522,23 @@ vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
                     else
                     {
                         if(SegmentMap.at("Segment" + num2Str(j+1)).Time_Vert == SegmentMap.at("Segment" + num2Str(j+1)).Time_PhaseThree_Vert)
+                        {
+                            Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                            Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                            Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                            if(Waypoints.at(4).at(i) >= 0)
                             {
-                                Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
-                                Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
-                                Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
-                                if(Waypoints.at(4).at(i) >= 0)
-                                {
-                                    Waypoints.at(2).at(i) = 0;
-                                    Waypoints.at(4).at(i) = 0;
-                                    Waypoints.at(6).at(i) = PreviousVerticalPosition;
-                                }
+                                Waypoints.at(2).at(i) = 0;
+                                Waypoints.at(4).at(i) = 0;
+                                Waypoints.at(6).at(i) = PreviousVerticalPosition;
                             }
-                            else
-                            {
-                                Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
-                                Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
-                                Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
-                            }
+                        }
+                        else
+                        {
+                            Waypoints.at(2).at(i) = SegmentMap.at("Segment" + num2Str(j+1)).VerticalAcceleration;
+                            Waypoints.at(4).at(i) = Waypoints.at(2).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalSpeed;
+                            Waypoints.at(6).at(i) = 0.5 * Waypoints.at(2).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(4).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousVerticalPosition;
+                        }
                     }
                 }
 
@@ -590,23 +590,23 @@ vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
                     else
                     {
                         if(SegmentMap.at("Segment" + num2Str(j+1)).Time_Hor == SegmentMap.at("Segment" + num2Str(j+1)).Time_PhaseThree_Hor)
+                        {
+                            Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                            Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                            Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                            if(Waypoints.at(4).at(i) <= 0)
                             {
-                                Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
-                                Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
-                                Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
-                                if(Waypoints.at(4).at(i) <= 0)
-                                {
-                                    Waypoints.at(1).at(i) = 0;
-                                    Waypoints.at(3).at(i) = 0;
-                                    Waypoints.at(5).at(i) = PreviousHorizontalPosition;
-                                }
+                                Waypoints.at(1).at(i) = 0;
+                                Waypoints.at(3).at(i) = 0;
+                                Waypoints.at(5).at(i) = PreviousHorizontalPosition;
                             }
-                            else
-                            {
-                                Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
-                                Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
-                                Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
-                            }
+                        }
+                        else
+                        {
+                            Waypoints.at(1).at(i) = -SegmentMap.at("Segment" + num2Str(j+1)).HorizontalAcceleration;
+                            Waypoints.at(3).at(i) = Waypoints.at(1).at(i) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalSpeed;
+                            Waypoints.at(5).at(i) = 0.5 * Waypoints.at(1).at(i) * pow((Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)),2) + Waypoints.at(3).at(i-1) * (Waypoints.at(0).at(i)-Waypoints.at(0).at(i-1)) + PreviousHorizontalPosition;
+                        }
                     }
                 }
             }
@@ -642,13 +642,13 @@ vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
     waypoints.open(waypoints_file.c_str());
     for (int i = 0; i < Waypoints.at(0).size(); i++)
     {
-        waypoints << Waypoints.at(0).at(i) << ",";
-        waypoints << Waypoints.at(1).at(i) << ",";
-        waypoints << Waypoints.at(2).at(i) << ",";
-        waypoints << Waypoints.at(3).at(i) << ",";
-        waypoints << Waypoints.at(4).at(i) << ",";
-        waypoints << Waypoints.at(5).at(i) << ",";
-        waypoints << Waypoints.at(6).at(i) <<endl;
+        waypoints << Waypoints.at(0).at(i) << ";";
+        waypoints << Waypoints.at(1).at(i) << ";";
+        waypoints << Waypoints.at(2).at(i) << ";";
+        waypoints << Waypoints.at(3).at(i) << ";";
+        waypoints << Waypoints.at(4).at(i) << ";";
+        waypoints << Waypoints.at(5).at(i) << ";";
+        waypoints << Waypoints.at(6).at(i);
         waypoints << endl;
     }
     waypoints.close();
@@ -660,38 +660,55 @@ vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
     return Waypoints;
 }
 
-double MissionAnalysis::getPower(Propeller myProp, double v_hor, double v_vert, double altitude, double a_hor, double a_vert, double m, double MTOW)
-{
-    Aerodynamics myAero;
-    BladeElementTheory myBET(myProp);
-
-    vector<double> iterateThrustAndDragResults = myAero.iterateThrustAndDrag(v_hor, v_vert, a_hor, a_vert, m, MTOW, altitude); // alpha, drag, delta, thrust
-    double Power = myBET.calcBET(v_hor, v_vert, altitude, iterateThrustAndDragResults.at(3), iterateThrustAndDragResults.at(2));
-
-    return Power;
-}
-
 void MissionAnalysis::doMissionAnalysis ()
 {
     myRuntimeInfo->out << "Performing Mission Analysis" << endl;
     Propeller myProp("TestProp.csv","TestAirfoil.csv");
+    Aerodynamics myAero;
+    BladeElementTheory myBET(myProp);
+
+    vector<vector<double>> MissionResults(5, vector<double>(Waypoints.at(0).size(), 0.0));
 
     for (int i = 0; i < Waypoints.at(0).size(); i++)
     {
-        double currentTime = Waypoints.at(0).at(i);
-        double currentHorizontalAcceleration = Waypoints.at(1).at(i);
-        double currentVerticalAcceleration = Waypoints.at(2).at(i);
-        double currentHorizontalVelocity = Waypoints.at(3).at(i);
-        double currentVerticalVelocity = Waypoints.at(4).at(i);
-        double currentHorizontalPosition = Waypoints.at(5).at(i);
-        double currentVerticalPosition = Waypoints.at(6).at(i);
+        cout << "Calculating Waypoint " << i+1 << "/" << (Waypoints.at(0).size());
+        cout << '\r';
 
         double m = 10; // hier getMass einfügen
         double MTOW = 15;
 
-        double currentPower = getPower(myProp, currentHorizontalVelocity, currentVerticalVelocity, currentVerticalPosition, currentHorizontalAcceleration, currentVerticalAcceleration, m, MTOW);
-        cout << currentPower << endl;
+        vector<double> iterateThrustAndDragResults = myAero.iterateThrustAndDrag(Waypoints.at(3).at(i), Waypoints.at(4).at(i), Waypoints.at(1).at(i), Waypoints.at(2).at(i), m, MTOW, Waypoints.at(6).at(i)); // alpha, drag, delta, thrust
+        double currentPower = myBET.calcBET(Waypoints.at(3).at(i), Waypoints.at(4).at(i),  Waypoints.at(6).at(i), iterateThrustAndDragResults.at(3), iterateThrustAndDragResults.at(2));
+
+        MissionResults.at(0).at(i) = currentPower;
+        MissionResults.at(1).at(i) = iterateThrustAndDragResults.at(3); //thrust
+        MissionResults.at(2).at(i) = iterateThrustAndDragResults.at(1); //drag
+        MissionResults.at(3).at(i) = iterateThrustAndDragResults.at(2); //delta
+        MissionResults.at(4).at(i) = iterateThrustAndDragResults.at(0); //alpha
+
     }
+    // write out results
+    const string missionResult_file = "MissionResults.csv";
+    ofstream missionResults;
+    missionResults.open(missionResult_file.c_str());
+    missionResults << "Time;Horizontal Acceleration;Vertical Acceleration;Horizontal Velocity;Vertical Velocity;Horizontal Position;Vertical Position;Power;Thrust;Drag;Delta;Alpha" << endl;
+    for (int i = 0; i < Waypoints.at(0).size(); i++)
+    {
+        missionResults << Waypoints.at(0).at(i) << ";";
+        missionResults << Waypoints.at(1).at(i) << ";";
+        missionResults << Waypoints.at(2).at(i) << ";";
+        missionResults << Waypoints.at(3).at(i) << ";";
+        missionResults << Waypoints.at(4).at(i) << ";";
+        missionResults << Waypoints.at(5).at(i) << ";";
+        missionResults << Waypoints.at(6).at(i) << ";";
+        missionResults << MissionResults.at(0).at(i) << ";";
+        missionResults << MissionResults.at(1).at(i) << ";";
+        missionResults << MissionResults.at(2).at(i) << ";";
+        missionResults << MissionResults.at(3).at(i) << ";";
+        missionResults << MissionResults.at(4).at(i) << ";";
+        missionResults << endl;
+    }
+    missionResults.close();
 }
 
 

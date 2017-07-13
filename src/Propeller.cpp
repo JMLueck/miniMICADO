@@ -132,7 +132,7 @@ double Propeller::getCL(double Re, double AoA)
     // if Re or AoA is out of Range of Polar-File --> interpolateLines is empty
     else
     {
-        return 0; // TODO: does this make sense?
+        return 0; // TODO: does this make sense? --> hier extensions aus paper einbauen
     }
 }
 

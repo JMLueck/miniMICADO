@@ -61,16 +61,25 @@ double Aerodynamics::getRotorPower(double altitude, double AoA, double thrust)
 }
 
 
-/******************************** Drag calculation **************************************/
+/******************************** Drag Calculation **************************************/
 
 vector<double> Aerodynamics::getDrag(double v_hor, double v_vert, double MTOW, double delta, double altitude)
 {
     atmosphere myatmo;
+    double alpha;
 
     vector<double> getDragResults (2,0.0);
 
     double v_res = sqrt(pow(v_hor,2) + pow(v_vert,2));
-    double alpha = asin(v_vert / v_res);
+    // catch alpha for vertical flight
+    if (v_hor != 0)
+    {
+        alpha = atan(v_vert/v_hor); // angle of effective velocity to horizon in degree
+    }
+    else
+    {
+        alpha = 90;
+    }
 
     // f is a function of alpha and delta -> iteration needed
     double f_0 = (0.75 + 0.25 * cos(alpha)) * 0.004 * pow(MTOW,(2/3)); // this is still questionable
@@ -84,6 +93,8 @@ vector<double> Aerodynamics::getDrag(double v_hor, double v_vert, double MTOW, d
 
     return getDragResults;
 }
+
+/******************************** Thrust Calculation **************************************/
 
 vector<double> Aerodynamics::calcThrust(double a_hor, double a_vert, double m, double alpha, double drag)
 {
@@ -100,6 +111,8 @@ vector<double> Aerodynamics::calcThrust(double a_hor, double a_vert, double m, d
 
     return calcThrustResults;
 }
+
+/******************************** Thrust and Drag Iteration *******************************/
 
 vector<double> Aerodynamics::iterateThrustAndDrag(double v_hor, double v_vert, double a_hor, double a_vert, double m, double MTOW, double altitude)
 {
