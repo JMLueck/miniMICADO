@@ -113,12 +113,16 @@ double Segment::calculateSlopeVelocity(double VelocityStart, double VelocityEnd,
 
 void Segment::getSegmentTimeAndWay()
 {
+    ExceptionAslopeHor = false;
+    ExceptionAslopeVert = false;
     /** IF: First Segment **/
     if (Number == 1)
     {
         if (VerticalVelocity < 0) /** Exception für Flug in negative Höhen **/
         {
             myRuntimeInfo->err << "Negative Velocity at First Segment. Please adjust the settings!" << endl;
+            system("");
+            exit(1);
         }
         else
         {
@@ -153,6 +157,8 @@ void Segment::getSegmentTimeAndWay()
                 if (Time_PhaseTwo < 0)
                 {
                     myRuntimeInfo->err << "Error in first Segment. Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                    system("");
+                    exit(1);
                 }
                 Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
             }
@@ -201,11 +207,15 @@ void Segment::getSegmentTimeAndWay()
                 if (Time_PhaseTwo_Vert < 0)
                 {
                     myRuntimeInfo->err << "Error in first Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                    system("");
+                    exit(1);
                 }
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
                 if (Time_PhaseTwo_Hor < 0)
                 {
                     myRuntimeInfo->err << "Error in first Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                    system("");
+                    exit(1);
                 }
                 Time_Vert = Time_PhaseOne_Vert + Time_PhaseTwo_Vert + Time_PhaseThree_Vert;
                 Time_Hor = Time_PhaseOne_Hor + Time_PhaseTwo_Hor + Time_PhaseThree_Hor;
@@ -217,6 +227,22 @@ void Segment::getSegmentTimeAndWay()
                     if(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] > 0)
                     {
                         Time_PhaseOne_Vert = -2*(VerticalDistance - configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_Vert)/configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                        if(Time_PhaseOne_Vert > Time_Vert)
+                        {
+                            Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                            Time_PhaseTwo_Vert = 0;
+                            Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                            configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert;
+                            configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                            VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                            VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                            VerticalWay_PhaseOne = 0;
+                            VerticalWay_PhaseTwo = 0;
+                            VerticalWay_PhaseThree = VerticalDistance;
+                            ExceptionAslopeVert = true;
+                        }
+                        else
+                        {
                         configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert;
                         configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
                         VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
@@ -226,6 +252,7 @@ void Segment::getSegmentTimeAndWay()
                         VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
                         VerticalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert;
                         VerticalWay_PhaseThree = 0;
+                        }
                     }
                     else
                     {
@@ -246,6 +273,22 @@ void Segment::getSegmentTimeAndWay()
                     if(configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] > 0)
                     {
                         Time_PhaseOne_Hor = -2*(HorizontalDistance - configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"]*Time_Hor)/configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
+                        if(Time_PhaseOne_Hor > Time_Hor)
+                        {
+                            Time_PhaseOne_Hor = Time_PhaseOne_Hor - Time_Hor;
+                            Time_PhaseTwo_Hor = 0;
+                            Time_PhaseThree_Hor = Time_Hor - Time_PhaseOne_Hor;
+                            configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] / Time_PhaseThree_Hor;
+                            HorizontalAcceleration = configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"];
+                            configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
+                            HorizontalVelocity = configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"];
+                            HorizontalWay_PhaseOne = 0;
+                            HorizontalWay_PhaseTwo = 0;
+                            HorizontalWay_PhaseThree = HorizontalDistance;
+                            ExceptionAslopeHor = true;
+                        }
+                        else
+                        {
                         configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] / Time_PhaseOne_Hor;
                         HorizontalAcceleration = configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"];
                         configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
@@ -255,6 +298,7 @@ void Segment::getSegmentTimeAndWay()
                         HorizontalWay_PhaseOne = 0.5*HorizontalAcceleration*pow(Time_PhaseOne_Hor,2);
                         HorizontalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"]*Time_PhaseTwo_Hor;
                         HorizontalWay_PhaseThree = 0;
+                        }
                     }
                     else
                     {
@@ -274,6 +318,8 @@ void Segment::getSegmentTimeAndWay()
             else
             {
                 myRuntimeInfo->err << "First Segment is not suitable. Please adjust the settings!" << endl;
+                system("");
+                exit(1);
             }
 
         }
@@ -311,6 +357,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                     myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                    system("");
+                    exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseThree + Time_PhaseTwo;
@@ -326,6 +374,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseThree + Time_PhaseTwo;
@@ -353,6 +403,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
@@ -368,6 +420,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
@@ -395,6 +449,8 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo = HorizontalWay_PhaseTwo / HorizontalVelocity;
                 Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
@@ -415,6 +471,8 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo = HorizontalWay_PhaseTwo / HorizontalVelocity;
                 Time = Time_PhaseTwo + Time_PhaseThree;
@@ -481,10 +539,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -502,15 +564,32 @@ void Segment::getSegmentTimeAndWay()
                         if(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] > 0)
                         {
                             Time_PhaseOne_Vert = -2*(VerticalDistance - configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_Vert)/configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
-                            configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert;
-                            VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
-                            configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
-                            VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
-                            Time_PhaseTwo_Vert = Time_Vert - Time_PhaseOne_Vert;
-                            Time_PhaseThree_Vert = 0;
-                            VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
-                            VerticalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert;
-                            VerticalWay_PhaseThree = 0;
+                            if(Time_PhaseOne_Vert > Time_Vert)
+                            {
+                                Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                                Time_PhaseTwo_Vert = 0;
+                                Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert;
+                                configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                VerticalWay_PhaseOne = 0;
+                                VerticalWay_PhaseTwo = 0;
+                                VerticalWay_PhaseThree = VerticalDistance;
+                                ExceptionAslopeVert = true;
+                            }
+                            else
+                            {
+                                configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert;
+                                VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                Time_PhaseTwo_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                Time_PhaseThree_Vert = 0;
+                                VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
+                                VerticalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert;
+                                VerticalWay_PhaseThree = 0;
+                            }
                         }
                         else
                         {
@@ -544,6 +623,22 @@ void Segment::getSegmentTimeAndWay()
                         else
                         {
                             Time_PhaseOne_Vert = -2*(VerticalDistance - abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"])*Time_Vert)/abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]);
+                            if(Time_PhaseOne_Vert > Time_Vert)
+                            {
+                                Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                                Time_PhaseTwo_Vert = 0;
+                                Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert);
+                                configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                VerticalWay_PhaseOne = 0;
+                                VerticalWay_PhaseTwo = 0;
+                                VerticalWay_PhaseThree = VerticalDistance;
+                                ExceptionAslopeVert = true;
+                            }
+                            else
+                            {
                             configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert);
                             VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
                             configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
@@ -553,6 +648,7 @@ void Segment::getSegmentTimeAndWay()
                             VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
                             VerticalWay_PhaseTwo = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert);
                             VerticalWay_PhaseThree = 0;
+                            }
                         }
                     }
 
@@ -563,6 +659,22 @@ void Segment::getSegmentTimeAndWay()
                     if(configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] > 0)
                     {
                         Time_PhaseOne_Hor = -2*(HorizontalDistance - configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"]*Time_Hor)/configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
+                        if(Time_PhaseOne_Hor > Time_Hor)
+                        {
+                            Time_PhaseOne_Hor = Time_PhaseOne_Hor - Time_Hor;
+                            Time_PhaseTwo_Hor = 0;
+                            Time_PhaseThree_Hor = Time_Hor - Time_PhaseOne_Hor;
+                            configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] / Time_PhaseThree_Hor;
+                            HorizontalAcceleration = configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"];
+                            configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
+                            HorizontalVelocity = configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"];
+                            HorizontalWay_PhaseOne = 0;
+                            HorizontalWay_PhaseTwo = 0;
+                            HorizontalWay_PhaseThree = HorizontalDistance;
+                            ExceptionAslopeHor = true;
+                        }
+                        else
+                        {
                         configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] / Time_PhaseOne_Hor;
                         HorizontalAcceleration = configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"];
                         configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
@@ -572,6 +684,7 @@ void Segment::getSegmentTimeAndWay()
                         HorizontalWay_PhaseOne = 0.5*HorizontalAcceleration*pow(Time_PhaseOne_Hor,2);
                         HorizontalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"]*Time_PhaseTwo_Hor;
                         HorizontalWay_PhaseThree = 0;
+                        }
                     }
                     else
                     {
@@ -643,10 +756,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -666,6 +783,22 @@ void Segment::getSegmentTimeAndWay()
                         if(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] > 0)
                         {
                             Time_PhaseOne_Vert = -2*(VerticalDistance - configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_Vert)/configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                            if(Time_PhaseOne_Vert > Time_Vert)
+                            {
+                                Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                                Time_PhaseTwo_Vert = 0;
+                                Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert;
+                                configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                VerticalWay_PhaseOne = 0;
+                                VerticalWay_PhaseTwo = 0;
+                                VerticalWay_PhaseThree = VerticalDistance;
+                                ExceptionAslopeVert = true;
+                            }
+                            else
+                            {
                             configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert;
                             VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
                             configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
@@ -675,6 +808,7 @@ void Segment::getSegmentTimeAndWay()
                             VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
                             VerticalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert;
                             VerticalWay_PhaseThree = 0;
+                            }
                         }
                         else
                         {
@@ -708,6 +842,22 @@ void Segment::getSegmentTimeAndWay()
                         else
                         {
                             Time_PhaseOne_Vert = -2*(VerticalDistance - abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"])*Time_Vert)/abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]);
+                            if(Time_PhaseOne_Vert > Time_Vert)
+                            {
+                                Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                                Time_PhaseTwo_Vert = 0;
+                                Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert);
+                                configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                VerticalWay_PhaseOne = 0;
+                                VerticalWay_PhaseTwo = 0;
+                                VerticalWay_PhaseThree = VerticalDistance;
+                                ExceptionAslopeVert = true;
+                            }
+                            else
+                            {
                             configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert);
                             VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
                             configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
@@ -717,6 +867,7 @@ void Segment::getSegmentTimeAndWay()
                             VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
                             VerticalWay_PhaseTwo = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert);
                             VerticalWay_PhaseThree = 0;
+                            }
                         }
                     }
 
@@ -821,10 +972,14 @@ void Segment::getSegmentTimeAndWay()
                     if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -842,6 +997,22 @@ void Segment::getSegmentTimeAndWay()
                             if(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] > 0)
                             {
                                 Time_PhaseOne_Vert = -2*(VerticalDistance - configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_Vert)/configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                if(Time_PhaseOne_Vert > Time_Vert)
+                                {
+                                    Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                                    Time_PhaseTwo_Vert = 0;
+                                    Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                    configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert;
+                                    configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                    VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                    VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                    VerticalWay_PhaseOne = 0;
+                                    VerticalWay_PhaseTwo = 0;
+                                    VerticalWay_PhaseThree = VerticalDistance;
+                                    ExceptionAslopeVert = true;
+                                }
+                                else
+                                {
                                 configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert;
                                 VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
                                 configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
@@ -851,6 +1022,7 @@ void Segment::getSegmentTimeAndWay()
                                 VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
                                 VerticalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert;
                                 VerticalWay_PhaseThree = 0;
+                                }
                             }
                             else
                             {
@@ -884,6 +1056,22 @@ void Segment::getSegmentTimeAndWay()
                             else
                             {
                                 Time_PhaseOne_Vert = -2*(VerticalDistance - abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"])*Time_Vert)/abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]);
+                                if(Time_PhaseOne_Vert > Time_Vert)
+                                {
+                                    Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                                    Time_PhaseTwo_Vert = 0;
+                                    Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                    configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert);
+                                    configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                    VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                    VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                    VerticalWay_PhaseOne = 0;
+                                    VerticalWay_PhaseTwo = 0;
+                                    VerticalWay_PhaseThree = VerticalDistance;
+                                    ExceptionAslopeVert = true;
+                                }
+                                else
+                                {
                                 configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert);
                                 VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
                                 configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
@@ -893,6 +1081,7 @@ void Segment::getSegmentTimeAndWay()
                                 VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
                                 VerticalWay_PhaseTwo = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert);
                                 VerticalWay_PhaseThree = 0;
+                                }
                             }
                         }
 
@@ -903,6 +1092,22 @@ void Segment::getSegmentTimeAndWay()
                         if(configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] > 0)
                         {
                             Time_PhaseOne_Hor = -2*(HorizontalDistance - configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"]*Time_Hor)/configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
+                            if(Time_PhaseOne_Hor > Time_Hor)
+                            {
+                                Time_PhaseOne_Hor = Time_PhaseOne_Hor - Time_Hor;
+                                Time_PhaseTwo_Hor = 0;
+                                Time_PhaseThree_Hor = Time_Hor - Time_PhaseOne_Hor;
+                                configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] / Time_PhaseThree_Hor;
+                                HorizontalAcceleration = configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"];
+                                configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
+                                HorizontalVelocity = configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"];
+                                HorizontalWay_PhaseOne = 0;
+                                HorizontalWay_PhaseTwo = 0;
+                                HorizontalWay_PhaseThree = HorizontalDistance;
+                                ExceptionAslopeHor = true;
+                            }
+                            else
+                            {
                             configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] / Time_PhaseOne_Hor;
                             HorizontalAcceleration = configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"];
                             configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
@@ -912,6 +1117,7 @@ void Segment::getSegmentTimeAndWay()
                             HorizontalWay_PhaseOne = 0.5*HorizontalAcceleration*pow(Time_PhaseOne_Hor,2);
                             HorizontalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"]*Time_PhaseTwo_Hor;
                             HorizontalWay_PhaseThree = 0;
+                            }
                         }
                         else
                         {
@@ -985,10 +1191,14 @@ void Segment::getSegmentTimeAndWay()
                     if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_Vert = Time_PhaseTwo_Vert + Time_PhaseThree_Vert;
                     Time_Hor = Time_PhaseOne_Hor + Time_PhaseTwo_Hor + Time_PhaseThree_Hor;
@@ -1119,6 +1329,22 @@ void Segment::getSegmentTimeAndWay()
                         if(configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] > 0)
                         {
                             Time_PhaseOne_Hor = -2*(HorizontalDistance - configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"]*Time_Hor)/configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
+                            if(Time_PhaseOne_Hor > Time_Hor)
+                            {
+                                Time_PhaseOne_Hor = Time_PhaseOne_Hor - Time_Hor;
+                                Time_PhaseTwo_Hor = 0;
+                                Time_PhaseThree_Hor = Time_Hor - Time_PhaseOne_Hor;
+                                configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] / Time_PhaseThree_Hor;
+                                HorizontalAcceleration = configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"];
+                                configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
+                                HorizontalVelocity = configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"];
+                                HorizontalWay_PhaseOne = 0;
+                                HorizontalWay_PhaseTwo = 0;
+                                HorizontalWay_PhaseThree = HorizontalDistance;
+                                ExceptionAslopeHor = true;
+                            }
+                            else
+                            {
                             configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"] / Time_PhaseOne_Hor;
                             HorizontalAcceleration = configXML["Segment@"+num2Str(Number)+"/HorizontalAcceleration"];
                             configXML["Segment@"+num2Str(Number)+"/HorizontalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"];
@@ -1128,6 +1354,7 @@ void Segment::getSegmentTimeAndWay()
                             HorizontalWay_PhaseOne = 0.5*HorizontalAcceleration*pow(Time_PhaseOne_Hor,2);
                             HorizontalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/HorizontalSpeed"]*Time_PhaseTwo_Hor;
                             HorizontalWay_PhaseThree = 0;
+                            }
                         }
                         else
                         {
@@ -1201,10 +1428,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1430,10 +1661,14 @@ void Segment::getSegmentTimeAndWay()
                     if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Horizontal Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in Segment (Vertical Part) No." + num2Str(Number) + ". Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1453,6 +1688,22 @@ void Segment::getSegmentTimeAndWay()
                             if(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] > 0)
                             {
                                 Time_PhaseOne_Vert = -2*(VerticalDistance - configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_Vert)/configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                if(Time_PhaseOne_Vert > Time_Vert)
+                                {
+                                    Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                                    Time_PhaseTwo_Vert = 0;
+                                    Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                    configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert;
+                                    configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                    VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                    VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                    VerticalWay_PhaseOne = 0;
+                                    VerticalWay_PhaseTwo = 0;
+                                    VerticalWay_PhaseThree = VerticalDistance;
+                                    ExceptionAslopeVert = true;
+                                }
+                                else
+                                {
                                 configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert;
                                 VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
                                 configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
@@ -1462,6 +1713,7 @@ void Segment::getSegmentTimeAndWay()
                                 VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
                                 VerticalWay_PhaseTwo = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert;
                                 VerticalWay_PhaseThree = 0;
+                                }
                             }
                             else
                             {
@@ -1495,6 +1747,22 @@ void Segment::getSegmentTimeAndWay()
                             else
                             {
                                 Time_PhaseOne_Vert = -2*(VerticalDistance - abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"])*Time_Vert)/abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]);
+                                if(Time_PhaseOne_Vert > Time_Vert)
+                                {
+                                    Time_PhaseOne_Vert = Time_PhaseOne_Vert - Time_Vert;
+                                    Time_PhaseTwo_Vert = 0;
+                                    Time_PhaseThree_Vert = Time_Vert - Time_PhaseOne_Vert;
+                                    configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseThree_Vert);
+                                    configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
+                                    VerticalVelocity = configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"];
+                                    VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
+                                    VerticalWay_PhaseOne = 0;
+                                    VerticalWay_PhaseTwo = 0;
+                                    VerticalWay_PhaseThree = VerticalDistance;
+                                    ExceptionAslopeVert = true;
+                                }
+                                else
+                                {
                                 configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"] = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"] / Time_PhaseOne_Vert);
                                 VerticalAcceleration = configXML["Segment@"+num2Str(Number)+"/VerticalAcceleration"];
                                 configXML["Segment@"+num2Str(Number)+"/VerticalSpeed"] = configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"];
@@ -1504,6 +1772,7 @@ void Segment::getSegmentTimeAndWay()
                                 VerticalWay_PhaseOne = 0.5*VerticalAcceleration*pow(Time_PhaseOne_Vert,2);
                                 VerticalWay_PhaseTwo = abs(configXML["Segment@"+num2Str(Number+1)+"/VerticalSpeed"]*Time_PhaseTwo_Vert);
                                 VerticalWay_PhaseThree = 0;
+                                }
                             }
                         }
 
@@ -1561,6 +1830,7 @@ void Segment::getSegmentTimeAndWay()
         {
             if ((configXML["Segment@"+num2Str(Number-1)+"/HorizontalDistance"] == 0 && configXML["Segment@"+num2Str(Number-1)+"/VerticalDistance"] == 0) || (configXML["Segment@"+num2Str(Number-1)+"/HorizontalDistance"] != 0 && configXML["Segment@"+num2Str(Number-1)+"/VerticalDistance"] == 0) || (configXML["Segment@"+num2Str(Number-1)+"/HorizontalDistance"] == 0 && configXML["Segment@"+num2Str(Number-1)+"/VerticalDistance"] != 0 && configXML["Segment@"+num2Str(Number-1)+"/VerticalSpeed"] > 0) || (configXML["Segment@"+num2Str(Number-1)+"/HorizontalDistance"] != 0 && configXML["Segment@"+num2Str(Number-1)+"/VerticalDistance"] != 0 && configXML["Segment@"+num2Str(Number-1)+"/VerticalSpeed"] > 0))
             {
+
                 /** Wenn vor dem vertikalen Sinksegment ein Schwebesegment, ein horizontales Segment oder ein vertikales bzw. schräges Steigsegment war, dann muss zunächst beschleunigt werden **/
                 Time_PhaseThree = abs(VerticalVelocity / VerticalAcceleration);
                 VerticalWay_PhaseThree = abs(VerticalVelocity * Time_PhaseThree) - 0.5 * VerticalAcceleration * pow(Time_PhaseThree,2);
@@ -1570,12 +1840,15 @@ void Segment::getSegmentTimeAndWay()
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment. Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time = Time_PhaseOne + Time_PhaseTwo + Time_PhaseThree;
             }
             else
             {
+
                     /** Wenn vor dem vertikalen Sinksegment ein vertikales Sinksegment oder ein schräges Sinksegment war, dann muss nicht mehr beschleunigt werden **/
                     Time_PhaseThree = abs(VerticalVelocity / VerticalAcceleration);
                     VerticalWay_PhaseThree = abs(VerticalVelocity * Time_PhaseThree) - 0.5 * VerticalAcceleration * pow(Time_PhaseThree,2);
@@ -1583,6 +1856,8 @@ void Segment::getSegmentTimeAndWay()
                     if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment. Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                     Time_PhaseTwo = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                     Time = Time_PhaseTwo + Time_PhaseThree;
@@ -1613,16 +1888,19 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
                 Time_Vert = Time_PhaseOne_Vert + Time_PhaseTwo_Vert + Time_PhaseThree_Vert;
                 Time_Hor = Time_PhaseOne_Hor + Time_PhaseTwo_Hor + Time_PhaseThree_Hor;
-
                 /** Check, which is longer and recalculate shorter one **/
                 if (Time_Hor > Time_Vert)
                 {
@@ -1672,10 +1950,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1746,10 +2028,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1818,10 +2104,14 @@ void Segment::getSegmentTimeAndWay()
                 if (HorizontalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Horizontal Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 if (VerticalWay_PhaseTwo < 0)
                     {
                         myRuntimeInfo->err << "Error in last Segment (Vertical Part). Please reduce Velocity or increase Distance or increase Acceleration!" << endl;
+                        system("");
+                        exit(1);
                     }
                 Time_PhaseTwo_Vert = abs(VerticalWay_PhaseTwo / VerticalVelocity);
                 Time_PhaseTwo_Hor = HorizontalWay_PhaseTwo / HorizontalVelocity;
@@ -1894,6 +2184,8 @@ void Segment::getSegmentTimeAndWay()
         else
         {
             myRuntimeInfo->err << "Last Segment is not suitable. Please adjust the settings!" << endl;
+            system("");
+                        exit(1);
         }
     }
 }

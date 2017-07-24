@@ -52,6 +52,9 @@ class Segment
 
         double calculateSlopeVelocity(double VelocityStart, double VelocityEnd, double Acceleration, double MissionTime, double MissionWay);
 
+        bool ExceptionAslopeHor;
+        bool ExceptionAslopeVert;
+
     protected:
 
     private:
