@@ -1,0 +1,47 @@
+Configuration 
+
+#Mach 
+0
+
+#IYsym IZsym Zsym 
+0 0 0 
+
+#Sref Cref Bref 
+0.3 0.3 1
+
+#Xref Yref Zref 
+0.0 0.0 0.0 
+
+#-----------------------------------
+SURFACE 
+Wing 
+
+!Nchordwise Cspace Nspanwise Sspace 
+12 1.0 40 -1.1 
+
+INDEX 
+1 
+
+YDUPLICATE 
+0 
+
+ANGLE 
+0 
+
+SCALE 
+1.0 1.0 1.0 
+
+TRANSLATE 
+0 0 0 
+
+SECTION 
+#Xle Yle Zle Chord Ainc Nspanwise Sspace 
+0 0 0 0.3 0
+NACA 
+0012 
+
+SECTION 
+#Xle Yle Zle Chord Ainc Nspanwise Sspace 
+0 0.0410369 0 0.3 0
+AFILE 
+clarky.dat

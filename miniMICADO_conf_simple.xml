@@ -8,34 +8,19 @@
     </ControlSettings>
     <GeometrySettings Desc="Geometrieeinstellungen">
 		<NumberOfRotors>1</NumberOfRotors>
-		<RotorDiameter Desc="in m">0.5</RotorDiameter>
+		<RotorDiameter Desc="in m">2</RotorDiameter>
 		<NumberOfBlades>3</NumberOfBlades>
 		<MACofBlades Desc="in m">0.25</MACofBlades>
 	</GeometrySettings>
-	<WingSettings>
-		<WingAirfoilFile>clarky.dat</WingAirfoilFile>
-		<Wingspan Desc="in m">1</Wingspan>
-		<WingMAC Desc="in m">0.3</WingMAC>
-		<WingSkinThickness Desc="in mm">2</WingSkinThickness>
-		<WingSkinDensity Desc="in kg/m^3">1500</WingSkinDensity>
-		<WingBeamBendingStrength Desc="in N/m^2">120000000</WingBeamBendingStrength>
-		<WingBeamDensity Desc="in kg/m^3">1500</WingBeamDensity>
-	</WingSettings>
 	<MassSettings>
-		<PayloadMass Desc="in kg">5</PayloadMass>
+		<Payload Desc="in kg">5</Payload>
 	</MassSettings>
-	<FuselageSettings>
-		<PayloadLength Desc="in m">0.25</PayloadLength>
-		<PayloadWidth Desc="in m">0.1</PayloadWidth>
-		<FuselageSkinThickness Desc="in mm">2</FuselageSkinThickness>
-		<FuselageSkinDensity Desc="in kg/m^3">1500</FuselageSkinDensity>
-	</FuselageSettings>
 	<PowertrainSettings>
-		<EnergyDensity Desc="in Wh/kg">185</EnergyDensity>
-		<PowerDensity Desc="in kW/kg">2.8</PowerDensity> 
+		<EnergyDensity Desc="in kWh/kg">0.183</EnergyDensity>
+		<PowerDensity Desc="in kW/kg">2.758</PowerDensity> 
 	</PowertrainSettings>
 	<DesignMissionSettings> 
-		<IterationTimeFactor Desc="in sec">1</IterationTimeFactor>
+		<IterationTimeFactor Desc="in sec">100</IterationTimeFactor>
 		<Segments>
 			<NumberOfSegments>5</NumberOfSegments>
 			<Segment ID="1">
