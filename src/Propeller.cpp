@@ -1,14 +1,24 @@
 #include "Propeller.h"
 
-Propeller::Propeller(string PropFile, string AirfoilFile)
+Propeller::Propeller(node& configXML, string PropFile, string AirfoilAeroFile, string AirfoilGeoFile)
     :
+    configXML(configXML),
     PropFile(PropFile),
-    AirfoilFile(AirfoilFile),
-    NumberOfBlades(3)
+    AirfoilAeroFile(AirfoilAeroFile),
+    AirfoilGeoFile(AirfoilGeoFile),
+    NumberOfBlades(configXML["NumberOfBlades"])
 {
     //ctor
     readPropFile();
-    readAirfoilFile();
+    readAirfoilGeometryFile();
+    readAirfoilAeroFile();
+    calcAR();
+    calcTtoC();
+}
+
+void Propeller::calcAR()
+{
+    AR = Radius.back()/configXML["MACofBlades"];
 }
 
 void Propeller::readPropFile()
@@ -51,17 +61,17 @@ void Propeller::readPropFile()
     Area = PI * Radius.back();
 }
 
-void Propeller::readAirfoilFile()
+void Propeller::readAirfoilAeroFile()
 {
-    myRuntimeInfo->out << "Read Propeller Airfoil of " << AirfoilFile << endl;
+    myRuntimeInfo->out << "Read Propeller Airfoil Aero Data of " << AirfoilAeroFile << endl;
     //Einlesen der Propellerblattgeometrie aus einem CSV File
     string thisRow ="";
 
     //Open csv file
-    ifstream csvread(AirfoilFile.c_str());
+    ifstream csvread(AirfoilAeroFile.c_str());
     if (!csvread)
     {
-        myRuntimeInfo->err << "Could not open " << AirfoilFile <<endl;
+        myRuntimeInfo->err << "Could not open " << AirfoilAeroFile <<endl;
         exit(1);
     }
 
@@ -77,11 +87,70 @@ void Propeller::readAirfoilFile()
 
         //Auslesen der entsprechenden Werte
         Reynoldsnumber.push_back(atof(cells.at(0).c_str()));
-        AngleOfAttack.push_back(atof(cells.at(1).c_str()));
+        AngleOfAttack.push_back(PI/180*atof(cells.at(1).c_str()));
         CL.push_back(atof(cells.at(2).c_str()));
         CD.push_back(atof(cells.at(3).c_str()));
         cells.clear();
     }
+}
+
+void Propeller::readAirfoilGeometryFile()
+{
+    myRuntimeInfo->out << "Read Propeller Airfoil Geometry of " << AirfoilGeoFile << endl;
+    //Einlesen der Airfoilgeometrie aus einem CSV File
+    string thisRow ="";
+
+    //Open csv file
+    ifstream csvread(AirfoilGeoFile.c_str());
+    if (!csvread)
+    {
+        myRuntimeInfo->err << "Could not open " << AirfoilGeoFile <<endl;
+        exit(1);
+    }
+
+    vector<string> cells(2,"");// (0) x (1) z
+    //Execute once to eliminate heading in csv file
+    getline(csvread,thisRow);
+
+    //Read all lines in csv file
+    while(getline(csvread,thisRow) )
+    {
+        //Separate line string into string vector with delimiter ";" --> cells
+        cells = split(thisRow, ' ');
+
+        //Auslesen der entsprechenden Werte
+        x_coord.push_back(atof(cells.at(0).c_str()));
+        z_coord.push_back(atof(cells.at(1).c_str()));
+        cells.clear();
+    }
+}
+
+void Propeller::calcTtoC()
+{
+    vector<double> xdif;
+    vector<double> zdif;
+    vector<double> thickness;
+
+    for (int i = 0; i < x_coord.size()/2; i++)
+    {
+        for (int j=0; j<x_coord.size(); j++)
+        {
+            xdif.push_back(abs(x_coord.at(j) - x_coord.at(i)));
+            zdif.push_back(abs(z_coord.at(j) - z_coord.at(i)));
+        }
+        xdif.erase(std::find(xdif.begin(), xdif.end(), 0));
+        zdif.erase(std::find(zdif.begin(), zdif.end(), 0));
+
+        int pos = std::min_element(xdif.begin(), xdif.end()) - xdif.begin();
+
+        thickness.push_back(zdif.at(pos));
+//        cout << zdif.at(pos) << endl;
+//        getchar();
+
+        xdif.clear();
+        zdif.clear();
+    }
+    TtoC = thickness.at(std::max_element(thickness.begin(), thickness.end()) - thickness.begin());
 }
 
 double Propeller::getCL(double Re, double AoA)
@@ -90,7 +159,7 @@ double Propeller::getCL(double Re, double AoA)
     vector<int> interpolateLines;
     for (int i = 0; i < Reynoldsnumber.size(); i++)
     {
-        if ( abs(Re - Reynoldsnumber.at(i)) < 50000 && abs(AoA - AngleOfAttack.at(i)) < 0.25)
+        if ( abs(Re - Reynoldsnumber.at(i)) < 50000 && abs(AoA - AngleOfAttack.at(i)) < 0.25*PI/180)
         {
             interpolateLines.push_back(i);
         }
@@ -132,8 +201,21 @@ double Propeller::getCL(double Re, double AoA)
     // if Re or AoA is out of Range of Polar-File --> interpolateLines is empty
     else
     {
-        return 0; // TODO: does this make sense? --> hier extensions aus paper einbauen
-    }
+        double currentCL;
+        double CL2max = 1.19 * (1-pow(TtoC,2)) * (0.65 + 0.35 * pow(E,-(pow((9/AR),2.3))));
+        double RCL2 = 1.632 - CL2max;
+        double N2 = 1 + (CL2max/RCL2);
+
+        if ( (AoA*180/PI) < 92)
+        {
+            currentCL = -0.032 * ((AoA*180/PI) - 92) - RCL2 * pow((92-(AoA*180/PI))/52,N2);
+        }
+        else
+        {
+            currentCL = -0.032 * ((AoA*180/PI) - 92) - RCL2 * pow(((AoA*180/PI)-92)/51,N2);
+        }
+        return currentCL;
+      }
 }
 
 double Propeller::getCD(double Re, double AoA)
@@ -142,7 +224,7 @@ double Propeller::getCD(double Re, double AoA)
     vector<int> interpolateLines;
     for (int i = 0; i < Reynoldsnumber.size(); i++)
     {
-        if ( abs(Re - Reynoldsnumber.at(i)) < 50000 && abs(AoA - AngleOfAttack.at(i)) < 0.25)
+        if ( abs(Re - Reynoldsnumber.at(i)) < 50000 && abs(AoA - AngleOfAttack.at(i)) < 0.25*PI/180)
         {
             interpolateLines.push_back(i);
         }
@@ -183,7 +265,13 @@ double Propeller::getCD(double Re, double AoA)
     // if Re or AoA is out of Range of Polar-File --> interpolateLines is empty
     else
     {
-        return 1; // TODO: does this make sense?
+        double CD1max = CD.back(); // CD is assumed to be fairly independent from RE --> just take the last AoA
+        double CD2max = 2.3 * pow(E,-(pow((0.65*TtoC),0.9))) * (0.52 + 0.48 * pow(E,-(pow((6.5/AR),1.1))));
+        double AoA_0 = 0; // Platzhalter
+
+        double currentCD = CD1max + (CD2max - CD1max) * sin(PI/2*(AoA - AngleOfAttack.back())/(PI/2 - AngleOfAttack.back()));
+
+        return currentCD;
     }
 }
 

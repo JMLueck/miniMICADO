@@ -6,6 +6,8 @@
 #include "functions.h"
 #include "Segment.h"
 #include "Propeller.h"
+#include "Wing.h"
+#include "MassEstimation.h"
 
 using namespace std;
 
@@ -13,17 +15,18 @@ class MissionAnalysis
 {
     public:
 
+        MissionAnalysis(node& configXML, MassEstimation &myMassEstimation);
+        virtual ~MissionAnalysis();
+
         vector<vector<double>> Segments;
         vector<double> SegmentsTime;
 
         double MissionTime;
+        double MissionTimeStep;
 
         vector<vector<double>> Waypoints;
         vector<vector<double>> MissionResults;
         map<string,Segment> SegmentMap;
-
-        MissionAnalysis(node& configXML);
-        virtual ~MissionAnalysis();
 
         void calcMissionSegments();
         vector<vector<double>> calcMissionWaypoints();
@@ -41,6 +44,7 @@ class MissionAnalysis
 
     private:
         node& configXML;
+        MassEstimation *myMassEstimationPt;
 };
 
 #endif // MISSIONANALYSIS_H

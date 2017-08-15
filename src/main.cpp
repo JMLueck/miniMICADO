@@ -7,7 +7,7 @@
 #include "Segment.h"
 #include "Propeller.h"
 #include "BladeElementTheory.h"
-
+#include "Fuselage.h"
 
 using namespace std;
 
@@ -21,8 +21,11 @@ int main()
         node& configXML=aixml::openDocument("miniMICADO_conf.xml");
         myRuntimeInfo=new runtimeInfo(configXML,"miniMICADO");
 
+        Fuselage myFuselage(configXML);
+        Wing myWing(configXML, myFuselage);
+        MassEstimation myMassEstimation(configXML, myFuselage, myWing);
         myRuntimeInfo->out << "Calculating Mission Profile" << endl;
-        MissionAnalysis myMissionAnalysis(configXML);
+        MissionAnalysis myMissionAnalysis(configXML, myMassEstimation);
         myMissionAnalysis.doMissionAnalysis();
 
 //        BladeElementTheory myBET;

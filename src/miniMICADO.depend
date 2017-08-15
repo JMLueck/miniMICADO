@@ -237,3 +237,149 @@
 1499348543 source:c:\users\lueckhof\documents\github\minimicado\src\segment.cpp
 	"Segment.h"
 
+1502378182 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\aerodynamics.cpp
+	"Aerodynamics.h"
+
+1500888244 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\aerodynamics.h
+	<string>
+	<iostream>
+	<vector>
+	<fstream>
+	<cstdlib>
+	<sstream>
+	"tgmath.h"
+	"atmosphere.h"
+
+1500888244 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\lib\atmosphere\atmosphere.h
+	<iostream>
+	<string>
+	<math.h>
+
+1502790527 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\bladeelementtheory.cpp
+	"BladeElementTheory.h"
+
+1502781355 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\bladeelementtheory.h
+	<math.h>
+	"functions.h"
+	"atmosphere.h"
+	"Propeller.h"
+
+1500888244 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\lib\standardfiles\functions.h
+	<iostream>
+	<sstream>
+	<stdio.h>
+	<conio.h>
+	<algorithm>
+	<windows.h>
+	<string>
+	<math.h>
+	<sys/stat.h>
+	<tchar.h>
+	<ctype.h>
+	"runtimeInfo.h"
+
+1500888244 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\lib\standardfiles\runtimeinfo.h
+	<fstream>
+	<string>
+	<iomanip>
+	"node.h"
+	"time.h"
+
+1500888244 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\lib\aixml\node.h
+	<string>
+	<vector>
+	<map>
+	<limits>
+	<iostream>
+	<queue>
+	"tinyxml.h"
+	<sstream>
+
+1500888244 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\lib\aixml\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1500888244 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\lib\aixml\tinystr.h
+	<assert.h>
+	<string.h>
+
+1502283033 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\propeller.h
+	<string>
+	<iostream>
+	<vector>
+	<math.h>
+	"node.h"
+	"functions.h"
+
+1502459464 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\main.cpp
+	<iostream>
+	<fstream>
+	"runtimeInfo.h"
+	"node.h"
+	"MissionAnalysis.h"
+	"Segment.h"
+	"Propeller.h"
+	"BladeElementTheory.h"
+	"Fuselage.h"
+
+1502720376 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\missionanalysis.h
+	<vector>
+	"node.h"
+	"functions.h"
+	"Segment.h"
+	"Propeller.h"
+	"Wing.h"
+	"MassEstimation.h"
+
+1500888244 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\segment.h
+	<math.h>
+	<vector>
+	"node.h"
+	"functions.h"
+
+1502813168 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\missionanalysis.cpp
+	"MissionAnalysis.h"
+	"functions.h"
+	"Aerodynamics.h"
+	"BladeElementTheory.h"
+
+1500888244 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\segment.cpp
+	"Segment.h"
+
+1502279974 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\wing.h
+	<math.h>
+	<vector>
+	"node.h"
+	"functions.h"
+	"Fuselage.h"
+
+1502348002 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\massestimation.h
+	"node.h"
+	"math.h"
+	"Wing.h"
+
+1502788553 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\massestimation.cpp
+	"MassEstimation.h"
+
+1502436669 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\propeller.cpp
+	"Propeller.h"
+
+1502782942 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\wing.cpp
+	"Wing.h"
+
+1502277818 c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\fuselage.h
+	<math.h>
+	<vector>
+	"node.h"
+	"functions.h"
+
+1502277637 source:c:\users\lueckhof\documents\01_institut\06_veroeffentlichungen\dlrk 2017\minimicado_development\src\fuselage.cpp
+	"Fuselage.h"
+

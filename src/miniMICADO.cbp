@@ -53,6 +53,8 @@
 		<Unit filename="Aerodynamics.h" />
 		<Unit filename="BladeElementTheory.cpp" />
 		<Unit filename="BladeElementTheory.h" />
+		<Unit filename="Fuselage.cpp" />
+		<Unit filename="Fuselage.h" />
 		<Unit filename="MassEstimation.cpp" />
 		<Unit filename="MassEstimation.h" />
 		<Unit filename="MissionAnalysis.cpp" />
@@ -61,6 +63,8 @@
 		<Unit filename="Propeller.h" />
 		<Unit filename="Segment.cpp" />
 		<Unit filename="Segment.h" />
+		<Unit filename="Wing.cpp" />
+		<Unit filename="Wing.h" />
 		<Unit filename="lib/aixml/node.h" />
 		<Unit filename="lib/aixml/tinystr.h" />
 		<Unit filename="lib/aixml/tinyxml.h" />
