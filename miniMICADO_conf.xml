@@ -7,20 +7,28 @@
 		<LogFile>miniMICADO.log</LogFile>
     </ControlSettings>
     <GeometrySettings Desc="Geometrieeinstellungen">
-		<NumberOfRotors>1</NumberOfRotors>
-		<RotorDiameter Desc="in m">0.5</RotorDiameter>
+		<NumberOfRotors>4</NumberOfRotors>
+		<RotorDiameter Desc="in m">0.2</RotorDiameter>
 		<NumberOfBlades>3</NumberOfBlades>
 		<MACofBlades Desc="in m">0.25</MACofBlades>
 	</GeometrySettings>
 	<WingSettings>
+		<AddWing Desc="n:0, y:1">1</AddWing>
 		<WingAirfoilFile>clarky.dat</WingAirfoilFile>
 		<Wingspan Desc="in m">1</Wingspan>
-		<WingMAC Desc="in m">0.3</WingMAC>
+		<WingMAC Desc="in m">0.15</WingMAC>
 		<WingSkinThickness Desc="in mm">2</WingSkinThickness>
 		<WingSkinDensity Desc="in kg/m^3">1500</WingSkinDensity>
 		<WingBeamBendingStrength Desc="in N/m^2">120000000</WingBeamBendingStrength>
 		<WingBeamDensity Desc="in kg/m^3">1500</WingBeamDensity>
 	</WingSettings>
+	<MulticopterSettings>
+		<HorizontalRotorSeperation Desc="in m">1</HorizontalRotorSeperation>
+		<VerticalRotorSeperation Desc="in m">0</VerticalRotorSeperation>
+	</MulticopterSettings>
+	<TiltrotorSettings>
+		<Tiltrotor Desc="n:0, y:1">1</Tiltrotor>
+	</TiltrotorSettings>
 	<MassSettings>
 		<PayloadMass Desc="in kg">5</PayloadMass>
 	</MassSettings>

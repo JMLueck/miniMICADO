@@ -1,0 +1,9 @@
+avl.exe 
+load UAV_Wing.avl 
+oper 
+a a 3.10129
+x 
+ft WingTotalForces.txt 
+o 
+
+quit 
