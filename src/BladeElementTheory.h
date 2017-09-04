@@ -2,6 +2,8 @@
 #define BLADEELEMENTTHEORY_H
 
 #define PI 3.14159265358979323846
+#define E 2.718281828459045
+
 #include <math.h>
 #include "functions.h"
 #include "atmosphere.h"
@@ -10,10 +12,8 @@
 class BladeElementTheory
 {
     public:
-        BladeElementTheory(Propeller &myProp);
+        BladeElementTheory(node& configXML, Propeller &myProp);
         virtual ~BladeElementTheory();
-
-        Propeller *myPropPt;
 
         double v_res;
         double alpha;
@@ -41,6 +41,7 @@ class BladeElementTheory
         double v_tot;
         double AoA;
         double Re;
+        double Ma;
 
         double Power;
 
@@ -49,6 +50,8 @@ class BladeElementTheory
     protected:
 
     private:
+        node& configXML;
+        Propeller *myPropPt;
 };
 
 #endif // BLADEELEMENTTHEORY_H

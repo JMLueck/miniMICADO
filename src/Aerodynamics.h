@@ -9,22 +9,18 @@
 #include <sstream>
 #include "tgmath.h"
 #include "atmosphere.h"
+#include "node.h"
+#include "Wing.h"
 
 using namespace std;
 
 class Aerodynamics
 {
     public:
-        Aerodynamics();
+        Aerodynamics(node& configXML, Wing &myWing);
         virtual ~Aerodynamics();
 
         double power;
-
-        void buildXRotorCommandFile(double altitude, double AoA, double thrust);
-        void calcXRotor();
-        void readXRotorResults();
-
-        double getRotorPower(double altitude, double AoA, double thrust);
 
         vector<double> getDrag(double v_hor, double v_vert, double MTOW, double gamma, double altitude);
         vector<double> calcThrust(double a_Hor, double a_Vert, double m, double alpha, double drag);
@@ -33,6 +29,8 @@ class Aerodynamics
     protected:
 
     private:
+        node& configXML;
+        Wing *myWingPt;
 };
 
 #endif // AERODYNAMICS_H

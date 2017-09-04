@@ -4,62 +4,13 @@ using namespace std;
 
 /** Calculation of required power and energy --> possibly X_Rotor integration here**/
 
-Aerodynamics::Aerodynamics()
+Aerodynamics::Aerodynamics(node& configXML, Wing &myWing)
+    :
+    configXML(configXML),
+     myWingPt(&myWing)
 {
     //ctor
 }
-
-
-/******************************** X-Rotor Functions **************************************/
-void Aerodynamics::buildXRotorCommandFile(double altitude, double AoA, double thrust)
-{
-    const string xRotorCom = "xRotorCommands.txt";
-    ofstream xRotorComStream(xRotorCom.c_str());
-
-    xRotorComStream << "xrotor.exe" << endl;
-    xRotorComStream << "load ecruzer1.prop" << endl;
-    xRotorComStream << "atmo" << endl << (altitude/1000) << endl;
-    xRotorComStream << "oper" << endl;
-    xRotorComStream << "angle" << endl << AoA << endl;
-    xRotorComStream << "thrust" << endl << thrust << endl << "p" << endl; // p for fixed pitch
-    xRotorComStream << "write xRotorResults.dat" << endl << "o" << endl; // o for overwrite old file
-
-    xRotorComStream.close();
-}
-
-void Aerodynamics::calcXRotor()
-{
-    system("cmd.exe<xRotorCommands.txt");
-}
-
-void Aerodynamics::readXRotorResults()
-{
-    string resultfile = "xRotorResults.dat";
-    string line;
-
-    ifstream xRotorResultsStream(resultfile.c_str());
-
-    while (getline(xRotorResultsStream, line))
-    {
-        int powerCol = line.find("power(W)   :");
-
-        if (powerCol != string::npos)
-        {
-            string power_str = line.substr(powerCol + 12, (line.find("torque") - (powerCol + 12)));
-            power = atof(power_str.c_str());
-        }
-    }
-}
-
-double Aerodynamics::getRotorPower(double altitude, double AoA, double thrust)
-{
-    buildXRotorCommandFile(altitude, AoA, thrust);
-    calcXRotor();
-    readXRotorResults();
-
-    return power;
-}
-
 
 /******************************** Drag Calculation **************************************/
 
@@ -81,12 +32,23 @@ vector<double> Aerodynamics::getDrag(double v_hor, double v_vert, double MTOW, d
         alpha = 90;
     }
 
-    // f is a function of alpha and delta -> iteration needed
     double f_0 = (0.75 + 0.25 * cos(alpha)) * 0.004 * pow(MTOW,(2/3)); // this is still questionable
     double f_1 = f_0 / 300; // this is still questionable
     double f = f_0 + f_1 * (alpha + delta); // should be a parable of some sort...
 
+    if (configXML["Tiltrotor"] == 1)
+    {
+        f = f_0;
+    }
+
     double drag = 0.5 * myatmo.getDensity(altitude) * pow(v_res,2) * f;
+
+    if (configXML["AddWing"] == 1)
+    {
+        if ((alpha + delta) >= (15*PI/180) || (alpha + delta) <= (-5*PI/180))
+        {drag = drag + 0.5 * myatmo.getDensity(altitude) * pow(v_res,2) * myWingPt->WingArea * 2;}
+        else{}
+    }
 
     getDragResults.at(0) = alpha;
     getDragResults.at(1) = drag;

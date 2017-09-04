@@ -4,13 +4,12 @@ Wing::Wing(node& configXML, Fuselage &myFuselage)
     :
     configXML(configXML),
     myFuselagePt(&myFuselage),
-    WingAirfoilFile(configXML["WingAirfoilFile"])
+    WingAirfoilFile(configXML["WingAirfoilFile"]),
+    AVLresults(4,0.0)
 {
     WingArea = configXML["Wingspan"] * configXML["WingMAC"];
-
     readWingAirfoilFile();
     calcTtoC();
-    buildAVLInputFile();
     //ctor
 }
 
@@ -64,13 +63,20 @@ void Wing::calcTtoC()
         int pos = std::min_element(xdif.begin(), xdif.end()) - xdif.begin();
 
         thickness.push_back(zdif.at(pos));
-//        cout << zdif.at(pos) << endl;
-//        getchar();
 
         xdif.clear();
         zdif.clear();
     }
     TtoC = thickness.at(std::max_element(thickness.begin(), thickness.end()) - thickness.begin());
+}
+
+void Wing::calcWing(double AoA)
+{
+    buildAVLInputFile();
+    buildAVLCommandFile(AoA);
+    system("cmd.exe<AVLCommands.txt");
+    getchar();
+    readAVLResults();
 }
 
 void Wing::buildAVLInputFile()
@@ -97,14 +103,15 @@ void Wing::buildAVLInputFile()
             AVL_input << "SURFACE \nWing \n\n!Nchordwise Cspace Nspanwise Sspace \n12 1.0 40 -1.1 \n\n";
             AVL_input << "INDEX \n1 \n\nYDUPLICATE \n0 \n\nANGLE \n0 \n\nSCALE \n1.0 1.0 1.0 \n\nTRANSLATE \n0 0 0 \n\n";
             AVL_input << "SECTION \n#Xle Yle Zle Chord Ainc Nspanwise Sspace \n0 0 0 " << configXML["WingMAC"] << " 0\nNACA \n0012 \n\n";
-            AVL_input << "SECTION \n#Xle Yle Zle Chord Ainc Nspanwise Sspace \n0 " << myFuselagePt->FuselageWidth/2 << " 0 " << configXML["WingMAC"] << " 0\nAFILE \n" << configXML["WingAirfoilFile"];
+            AVL_input << "SECTION \n#Xle Yle Zle Chord Ainc Nspanwise Sspace \n0 " << myFuselagePt->FuselageWidth/2 << " 0 " << configXML["WingMAC"] << " 0\nAFILE \n" << configXML["WingAirfoilFile"] << "\n\n";
+            AVL_input << "SECTION \n#Xle Yle Zle Chord Ainc Nspanwise Sspace \n0 " << configXML["Wingspan"]/2 << " 0 " << configXML["WingMAC"] << " 0\nAFILE \n" << configXML["WingAirfoilFile"];
         }
 
         AVL_input.close();
         myRuntimeInfo->out << "Reference-AVL input file successfully generated" << endl;
 }
 
-void Wing::buildAVLCommandFile()
+void Wing::buildAVLCommandFile(double AoA)
 {
     string AVLCommands = "AVLCommands.txt";
     ofstream AVL_commands;
@@ -117,15 +124,71 @@ void Wing::buildAVLCommandFile()
         }
     else
         {
-            // TODO: finish command file, decide on CL (which flight condition?)
-            AVL_commands << "avl.exe \nload UAV_Wing.avl \noper \n";
+            AVL_commands << "avl.exe \nload UAV_Wing.avl \noper \na a " << AoA;
+            AVL_commands << "\nx \nft WingTotalForces.txt \no \n\nquit \n";
         }
 
     AVL_commands.close();
-
 }
 
-// TODO: write function for read out of AVL-results
+void Wing::readAVLResults()
+{
+    string WingTotalForcesFile = "WingTotalForces.txt";
+    double CDtot;
+    double CDind;
+    double oswald;
+    double CL;
+    string line;
+
+    ifstream WingTotalForcesStream(WingTotalForcesFile.c_str());
+    if(!WingTotalForcesStream)
+    {
+        myRuntimeInfo->err <<  "File " << WingTotalForcesFile << " not found" << endl;
+    }
+
+    if (WingTotalForcesStream)
+    {
+        while (getline(WingTotalForcesStream, line))
+        {
+            int CDtotCol = line.find("CDtot =");
+            int CDindCol = line.find("CDind =");
+            int OswaldCol = line.find("e =");
+            int CLCol = line.find("CLtot =");
+
+            if (CDtotCol != string::npos)
+            {
+                string CDtot_str = line.substr(CDtotCol + 7);
+                CDtot = atof(CDtot_str.c_str());
+            }
+            if (CDindCol != string::npos)
+            {
+                string CDind_str = line.substr(CDindCol + 7);
+                CDind = atof(CDind_str.c_str());
+            }
+            if (CLCol != string::npos)
+            {
+                string CL_str = line.substr(CLCol + 7);
+                CL = atof(CL_str.c_str());
+            }
+            if (OswaldCol != string::npos)
+            {
+                string oswald_str = line.substr(OswaldCol + 3, line.find("|") - (OswaldCol + 3));
+                oswald = atof(oswald_str.c_str());
+            }
+        }
+    }
+    else
+    {
+        myRuntimeInfo->err <<  "Read error Input" << endl;
+    }
+    WingTotalForcesStream.close();
+
+    AVLresults.at(0) = CL;
+    AVLresults.at(1) = CDtot;
+    AVLresults.at(2) = CDind;
+    AVLresults.at(3) = oswald;
+}
+
 
 Wing::~Wing()
 {

@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <vector>
+//#include <stdlib.h>
 #include "node.h"
 #include "functions.h"
 #include "Fuselage.h"
@@ -20,10 +21,14 @@ class Wing
         vector<double> z_coord;
         double TtoC;
 
+        vector<double> AVLresults;
+
         void readWingAirfoilFile();
         void calcTtoC();
+        void calcWing(double AoA);
         void buildAVLInputFile();
-        void buildAVLCommandFile();
+        void buildAVLCommandFile(double AoA);
+        void readAVLResults();
 
     protected:
 

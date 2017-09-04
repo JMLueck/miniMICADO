@@ -8,6 +8,7 @@
 #include "Propeller.h"
 #include "Wing.h"
 #include "MassEstimation.h"
+#include "Aerodynamics.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ class MissionAnalysis
 {
     public:
 
-        MissionAnalysis(node& configXML, MassEstimation &myMassEstimation);
+        MissionAnalysis(node& configXML, MassEstimation &myMassEstimation, Wing &myWing, Aerodynamics &myAero);
         virtual ~MissionAnalysis();
 
         vector<vector<double>> Segments;
@@ -37,6 +38,9 @@ class MissionAnalysis
         int getVerticalPhaseNumber(double currentTime);
         int getHorizontalPhaseNumber(double currentTime);
         void doMissionAnalysis();
+        void writeResults(int LoopNumber);
+
+        vector<double> calcBETResults;
 
         bool LastSegment;
 
@@ -45,6 +49,8 @@ class MissionAnalysis
     private:
         node& configXML;
         MassEstimation *myMassEstimationPt;
+        Wing *myWingPt;
+        Aerodynamics *myAeroPt;
 };
 
 #endif // MISSIONANALYSIS_H

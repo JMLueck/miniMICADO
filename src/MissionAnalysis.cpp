@@ -7,13 +7,16 @@
 /** Analysis of Power and Energy Consumption **/
 /** Possibly implementation of 6-DOF equations here **/
 
-MissionAnalysis::MissionAnalysis(node& configXML, MassEstimation &myMassEstimation)
+MissionAnalysis::MissionAnalysis(node& configXML, MassEstimation &myMassEstimation, Wing &myWing, Aerodynamics &myAero)
     :
     configXML(configXML),
     myMassEstimationPt(&myMassEstimation),
+    myWingPt(&myWing),
+    myAeroPt(&myAero),
     Segments(configXML["NumberOfSegments"], vector<double>(12,0.0)),
     SegmentsTime(configXML["NumberOfSegments"], 0.0),
-    MissionTime(0.0)
+    MissionTime(0.0),
+    MissionResults(6,vector<double>(0,0.0))
     //Waypoints(7, vector<double>((int(MissionTime)*configXML["IterationTimeFactor"]+1),0.0))
 {
     calcMissionSegments();
@@ -733,20 +736,50 @@ vector<vector<double>> MissionAnalysis::calcMissionWaypoints()
     return Waypoints;
 }
 
+void MissionAnalysis::writeResults(int LoopNumber)
+{
+    const string missionResult_file = "Results\\MissionResults_Loop" + num2Str(LoopNumber) + ".csv";
+    ofstream missionResults;
+    missionResults.open(missionResult_file.c_str());
+    missionResults << "Time;Horizontal Acceleration;Vertical Acceleration;Horizontal Velocity;Vertical Velocity;Horizontal Position;Vertical Position;Power;Thrust;Drag;Delta;Alpha;MissionEnergy" << endl;
+    for (int i = 0; i < Waypoints.at(0).size(); i++)
+    {
+        missionResults << Waypoints.at(0).at(i) << ";";
+        missionResults << Waypoints.at(1).at(i) << ";";
+        missionResults << Waypoints.at(2).at(i) << ";";
+        missionResults << Waypoints.at(3).at(i) << ";";
+        missionResults << Waypoints.at(4).at(i) << ";";
+        missionResults << Waypoints.at(5).at(i) << ";";
+        missionResults << Waypoints.at(6).at(i) << ";";
+        missionResults << MissionResults.at(0).at(i) << ";";
+        missionResults << MissionResults.at(1).at(i) << ";";
+        missionResults << MissionResults.at(2).at(i) << ";";
+        missionResults << MissionResults.at(3).at(i) << ";";
+        missionResults << MissionResults.at(4).at(i) << ";";
+        missionResults << MissionResults.at(5).at(i) << ";";
+        missionResults << endl;
+    }
+    missionResults.close();
+}
+
 void MissionAnalysis::doMissionAnalysis ()
 {
     myRuntimeInfo->out << "Performing Mission Analysis" << endl;
     Propeller myProp(configXML, "TestProp.csv","TestAirfoil.csv","clarky.dat");
-    Aerodynamics myAero;
-    BladeElementTheory myBET(myProp);
-    myMassEstimationPt->doMassEstimation(0,0); //Initial guess with P_max = E_M = 0;
+    //Aerodynamics myAero(configXML);
+    BladeElementTheory myBET(configXML, myProp);
 
     double eps = 1;
+    double LoopNumber = 1;
+
+    myMassEstimationPt->doMassEstimation(0,0); //Initial guess with P_max = E_M = 0;
+    myMassEstimationPt->writeResults(LoopNumber);
+
     do
     {
-        vector<vector<double>> MissionResults(6, vector<double>(Waypoints.at(0).size(), 0.0));
+        //vector<vector<double>> MissionResults(6, vector<double>(Waypoints.at(0).size(), 0.0));
         double TimeStepEnergy = 0;
-        double omega_start = 460;
+        double omega_start = 210;
         double m = myMassEstimationPt->VehicleMass;
         double MTOW = myMassEstimationPt->VehicleMass;
         double MTOW_old = MTOW;
@@ -756,48 +789,65 @@ void MissionAnalysis::doMissionAnalysis ()
             cout << "Calculating Waypoint " << i+1 << "/" << (Waypoints.at(0).size());
             cout << '\r';
 
-            vector<double> iterateThrustAndDragResults = myAero.iterateThrustAndDrag(Waypoints.at(3).at(i), Waypoints.at(4).at(i), Waypoints.at(1).at(i), Waypoints.at(2).at(i), m, MTOW, Waypoints.at(6).at(i)); // alpha, drag, delta, thrust
-            vector<double> calcBETResults = myBET.calcBET(Waypoints.at(3).at(i), Waypoints.at(4).at(i),  Waypoints.at(6).at(i), iterateThrustAndDragResults.at(3), iterateThrustAndDragResults.at(2), omega_start);
+            vector<double> iterateThrustAndDragResults = myAeroPt->iterateThrustAndDrag(Waypoints.at(3).at(i), Waypoints.at(4).at(i), Waypoints.at(1).at(i), Waypoints.at(2).at(i), m, MTOW, Waypoints.at(6).at(i)); // alpha, drag, delta, thrust
+
+            /** Compound Configuration - Wing **/
+            if (configXML["AddWing"] == 1)
+            {
+                double AoA = iterateThrustAndDragResults.at(0)+iterateThrustAndDragResults.at(2);
+                if (AoA <= (15*PI/180) && AoA >= (-5*PI/180))
+                {
+                    myWingPt->calcWing(AoA+3);
+                    atmosphere myatmo;
+                    double v_res = sqrt(pow(Waypoints.at(3).at(i),2) + pow(Waypoints.at(4).at(i),2));
+                    double WingLift = 0.5 * myatmo.getDensity(Waypoints.at(6).at(i)) * pow(v_res,2) * myWingPt->WingArea * myWingPt->AVLresults.at(0);
+                    cout << AoA << endl << myWingPt->AVLresults.at(0) << endl << v_res << endl << WingLift << endl;
+                    getchar();
+                    calcBETResults = myBET.calcBET(Waypoints.at(3).at(i), Waypoints.at(4).at(i),  Waypoints.at(6).at(i), ((iterateThrustAndDragResults.at(3)-WingLift)/configXML["NumberOfRotors"]), iterateThrustAndDragResults.at(2), omega_start);
+                }
+                else
+                {
+                    calcBETResults = myBET.calcBET(Waypoints.at(3).at(i), Waypoints.at(4).at(i),  Waypoints.at(6).at(i), (iterateThrustAndDragResults.at(3)/configXML["NumberOfRotors"]), iterateThrustAndDragResults.at(2), omega_start);
+                }
+
+            }
+            else
+            {
+                calcBETResults = myBET.calcBET(Waypoints.at(3).at(i), Waypoints.at(4).at(i),  Waypoints.at(6).at(i), (iterateThrustAndDragResults.at(3)/configXML["NumberOfRotors"]), iterateThrustAndDragResults.at(2), omega_start);
+            }
+
             omega_start = calcBETResults.at(0);
             double currentPower = calcBETResults.at(1);
+
+            /** Helicopter Configuration - Tailrotor **/
+            if (configXML["NumberOfRotors"] == 1)
+            {
+                currentPower = 1.1 * currentPower;
+            }
+
             TimeStepEnergy += currentPower * MissionTimeStep;
-
-            MissionResults.at(0).at(i) = currentPower;
-            MissionResults.at(1).at(i) = iterateThrustAndDragResults.at(3); //thrust
-            MissionResults.at(2).at(i) = iterateThrustAndDragResults.at(1); //drag
-            MissionResults.at(3).at(i) = iterateThrustAndDragResults.at(2); //delta
-            MissionResults.at(4).at(i) = iterateThrustAndDragResults.at(0); //alpha
-            MissionResults.at(5).at(i) = TimeStepEnergy;
+            MissionResults.at(0).push_back(currentPower);
+            MissionResults.at(1).push_back(iterateThrustAndDragResults.at(3)); //thrust
+            MissionResults.at(2).push_back(iterateThrustAndDragResults.at(1)); //drag
+            MissionResults.at(3).push_back(iterateThrustAndDragResults.at(2)); //delta
+            MissionResults.at(4).push_back(iterateThrustAndDragResults.at(0)); //alpha
+            MissionResults.at(5).push_back(TimeStepEnergy);
         }
+        cout << endl;
 
-        // write out results
-        const string missionResult_file = "MissionResults.csv";
-        ofstream missionResults;
-        missionResults.open(missionResult_file.c_str());
-        missionResults << "Time;Horizontal Acceleration;Vertical Acceleration;Horizontal Velocity;Vertical Velocity;Horizontal Position;Vertical Position;Power;Thrust;Drag;Delta;Alpha;MissionEnergy" << endl;
-        for (int i = 0; i < Waypoints.at(0).size(); i++)
-        {
-            missionResults << Waypoints.at(0).at(i) << ";";
-            missionResults << Waypoints.at(1).at(i) << ";";
-            missionResults << Waypoints.at(2).at(i) << ";";
-            missionResults << Waypoints.at(3).at(i) << ";";
-            missionResults << Waypoints.at(4).at(i) << ";";
-            missionResults << Waypoints.at(5).at(i) << ";";
-            missionResults << Waypoints.at(6).at(i) << ";";
-            missionResults << MissionResults.at(0).at(i) << ";";
-            missionResults << MissionResults.at(1).at(i) << ";";
-            missionResults << MissionResults.at(2).at(i) << ";";
-            missionResults << MissionResults.at(3).at(i) << ";";
-            missionResults << MissionResults.at(4).at(i) << ";";
-            missionResults << MissionResults.at(5).at(i) << ";";
-            missionResults << endl;
-        }
-        missionResults.close();
+        this->writeResults(LoopNumber);
+        LoopNumber++;
         myMassEstimationPt->doMassEstimation(MissionResults.at(0).at(std::max_element(MissionResults.at(0).begin(), MissionResults.at(0).end())-MissionResults.at(0).begin()), MissionResults.at(5).back());
+        myMassEstimationPt->writeResults(LoopNumber);
         eps = abs(myMassEstimationPt->VehicleMass - MTOW_old)/MTOW_old;
-        cout << "WireMass" << myMassEstimationPt->WireMass << endl << "BatteryMass" << myMassEstimationPt->Batterymass << endl << "Motormass" << myMassEstimationPt->MotorMass << endl;
-        getchar();
-    }while(eps > 0.1);
+        MissionResults.at(0).clear();
+        MissionResults.at(1).clear();
+        MissionResults.at(2).clear();
+        MissionResults.at(3).clear();
+        MissionResults.at(4).clear();
+        MissionResults.at(5).clear();
+    }
+    while(eps > 0.1);
 }
 
 

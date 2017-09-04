@@ -26,6 +26,7 @@ class MassEstimation
         double WireMass;
         double AvionicsMass;
         double LandingGearMass;
+        double ServomotorMass;
 
 
         void doMassEstimation(double P_max, double MissionEnergy);
@@ -37,6 +38,9 @@ class MassEstimation
         void estimateWireMass(double P_max);
         void estimateAvionicsMass();
         void estimateLandingGearMass();
+        void estimateServomotorMass();
+
+        void writeResults(int LoopNumber);
 
     protected:
 

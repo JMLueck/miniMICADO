@@ -8,6 +8,7 @@
 #include "Propeller.h"
 #include "BladeElementTheory.h"
 #include "Fuselage.h"
+#include "Aerodynamics.h"
 
 using namespace std;
 
@@ -24,17 +25,10 @@ int main()
         Fuselage myFuselage(configXML);
         Wing myWing(configXML, myFuselage);
         MassEstimation myMassEstimation(configXML, myFuselage, myWing);
+        Aerodynamics myAero(configXML, myWing);
         myRuntimeInfo->out << "Calculating Mission Profile" << endl;
-        MissionAnalysis myMissionAnalysis(configXML, myMassEstimation);
+        MissionAnalysis myMissionAnalysis(configXML, myMassEstimation, myWing, myAero);
         myMissionAnalysis.doMissionAnalysis();
-
-//        BladeElementTheory myBET;
-//        myBET.calcBET(3,20,100,100,3);
-
-//        Segment mySegment(configXML,5);
-//
-//        cout << mySegment.HorizontalAcceleration << endl << mySegment.VerticalDistance << endl;
-//        getchar();
 
         return 0;
     }

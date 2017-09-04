@@ -1,7 +1,8 @@
 #include "BladeElementTheory.h"
 
-BladeElementTheory::BladeElementTheory(Propeller &myProp)
+BladeElementTheory::BladeElementTheory(node& configXML, Propeller &myProp)
     :
+    configXML(configXML),
     myPropPt(&myProp)
 {
     //ctor
@@ -54,6 +55,11 @@ vector<double> BladeElementTheory::calcBET(double v_hor, double v_vert, double a
                 v_tot = sqrt(pow(v_parallel,2) + pow(v_perpendicular,2));
                 AoA = myPropPt->theta.at(i) - phi;
                 Re = myatmo.getDensity(altitude) *  v_parallel * myPropPt->Chord.at(i) / myatmo.getViscosity(altitude);
+                Ma = v_tot / myatmo.getSpeedOfSound(altitude);
+
+                // Tip Loss
+                double f = (configXML["NumberOfBlades"] * (1-myPropPt->Radius.at(i)))/(2*sin(phi));
+                double F = 2 * acos(pow(E,-f)) / PI;
 
                 // thrust of blade section at given psi with given omega
                 dLift_r_psi = 0.5 * myatmo.getDensity(altitude)
@@ -92,11 +98,39 @@ vector<double> BladeElementTheory::calcBET(double v_hor, double v_vert, double a
         {
             omega = omega + eps;
         }
-        cout << omega << endl;
     }
 
     omega_start = omega;
     Power = omega * Moment;
+
+    /** Multikopter Configuration - Interference **/
+    if (configXML["NumberOfRotors"] > 1)
+    {
+        double k_mu;
+        double mu = v_tot/omega*myPropPt->Radius.back();
+        double gamma_0 = atan(configXML["VerticalRotorSeperation"]/configXML["HorizontalRotorSeperation"]);
+        double h_rr = sin(alpha + delta + phi + gamma_0) * sqrt(pow(configXML["VerticalRotorSeperation"],2) + pow(configXML["HorizontalRotorSeperation"],2));
+        if (mu<0.1)
+        {k_mu = 0.41 + 0.59*sin(5*PI*mu);}
+        else{k_mu = 1;}
+        double m_tilde = k_mu * (2/PI) * acos((h_rr/configXML["HorizontalRotorSeperation"]) - (h_rr/configXML["HorizontalRotorSeperation"])*sqrt(1-pow((h_rr/configXML["HorizontalRotorSeperation"]),2)));
+
+        if(isnan(m_tilde))
+        {
+            cout << k_mu << endl;
+            cout << gamma_0 << endl;
+            cout << h_rr << endl;
+            getchar();
+        }
+
+        if (configXML["NumberOfRotors"] == 2 || configXML["NumberOfRotors"] == 4)
+        {Power = Power * configXML["NumberOfRotors"] * (1+m_tilde);}
+        else if (configXML["NumberOfRotors"] == 6)
+        {Power = Power * configXML["NumberOfRotors"] * (6+8*m_tilde);}
+        else if (configXML["NumberOfRotors"] == 8)
+        {Power = Power * configXML["NumberOfRotors"] * (8+12*m_tilde);}
+        else{cout << "Multicopter-Configuration with " << configXML["NumberOfRotors"] << " Rotors is not supported";}
+    }
 
     vector<double> calcBETResults (2,0.0);
     calcBETResults.at(0) = omega_start;

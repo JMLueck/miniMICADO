@@ -144,8 +144,6 @@ void Propeller::calcTtoC()
         int pos = std::min_element(xdif.begin(), xdif.end()) - xdif.begin();
 
         thickness.push_back(zdif.at(pos));
-//        cout << zdif.at(pos) << endl;
-//        getchar();
 
         xdif.clear();
         zdif.clear();

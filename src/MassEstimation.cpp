@@ -1,8 +1,5 @@
 #include "MassEstimation.h"
 
-/** Estimation of Mass of different Components (Wings, Structure, Electronics etc.)**/
-/** Results of Bachelorthesis are to be implemented here **/
-
 MassEstimation::MassEstimation(node& configXML, Fuselage &myFuselage, Wing &myWing)
     :
     configXML(configXML),
@@ -18,14 +15,22 @@ void MassEstimation::doMassEstimation(double P_max, double MissionEnergy)
     estimateRotorMass();
     estimateMotorMass(P_max);
     estimateBatteryMass(P_max, MissionEnergy);
-    estimateWingMass();
     estimateWireMass(P_max);
     estimateAvionicsMass();
     estimateLandingGearMass();
 
+    VehicleMass = configXML["PayloadMass"] + FuselageMass + RotorMass + MotorMass + BatteryMass + WireMass + AvionicsMass + LandingGearMass;
 
-    VehicleMass = configXML["PayloadMass"] + FuselageMass + RotorMass + MotorMass + BatteryMass + WingMass + WireMass + AvionicsMass + LandingGearMass;
-
+    if (configXML["AddWing"] == 1)
+    {
+        estimateWingMass();
+        VehicleMass =  VehicleMass + WingMass;
+    }
+    if (configXML["Tiltrotor"] == 1)
+    {
+        estimateServomotorMass();
+        VehicleMass =  VehicleMass + ServomotorMass;
+    }
 }
 
 void MassEstimation::estimateFuselageMass()
@@ -36,11 +41,23 @@ void MassEstimation::estimateFuselageMass()
 void MassEstimation::estimateRotorMass()
 {
     RotorMass = configXML["NumberOfRotors"] * (0.5465 * pow(configXML["RotorDiameter"],3) - 0.1026 * pow(configXML["RotorDiameter"],2) + 0.01679 * configXML["RotorDiameter"] + 0.0009706);
+
+    // Account for Tailrotormass (size is set to one quarter of mainrotor)
+    if (configXML["NumberOfRotors"] == 1)
+    {
+        RotorMass = RotorMass + (0.5465 * pow(configXML["RotorDiameter"]/4,3) - 0.1026 * pow(configXML["RotorDiameter"]/4,2) + 0.01679 * configXML["RotorDiameter"]/4 + 0.0009706);
+    }
 }
 
 void MassEstimation::estimateMotorMass(double P_max)
 {
     MotorMass = configXML["NumberOfRotors"] * (0.02573 + 0.0002075 * P_max);
+
+    // Account for Tailrotor-Motormass with P_max set to 10% of total power (see Mission Analysis)
+    if (configXML["NumberOfRotors"] == 1)
+    {
+        MotorMass = MotorMass + (0.02573 + 0.0002075 * 0.1*P_max);
+    }
 }
 
 void MassEstimation::estimateBatteryMass(double P_max, double MissionEnergy)
@@ -91,6 +108,32 @@ void MassEstimation::estimateWireMass(double P_max) // from Vahana Code
     double SensorWireMass = SensorWireDensity * WiresPerBundle * SensorWireLength;
 
     WireMass = PowerWireMass + SensorWireMass;
+}
+
+void MassEstimation::estimateServomotorMass()
+{
+    double Momentum = (this->RotorMass + this->MotorMass) * 0.05;
+    ServomotorMass = 0.04473 * Momentum + 0.01495;
+}
+
+void MassEstimation::writeResults(int LoopNumber)
+{
+    const string MEResult_file = "Results\\MassEstimationResults_Loop" + num2Str(LoopNumber) + ".csv";
+    ofstream MEResults;
+    MEResults.open(MEResult_file.c_str());
+    MEResults << "Payload;Fuselage;Rotor;Motor;Battery;Wing;Wires;Avionics;Landing Gear;Vehicle"<< endl;
+    MEResults <<configXML["PayloadMass"] << ";";
+    MEResults << FuselageMass << ";";
+    MEResults << RotorMass << ";";
+    MEResults << MotorMass << ";";
+    MEResults << BatteryMass << ";";
+    MEResults << WingMass << ";";
+    MEResults << WireMass << ";";
+    MEResults << AvionicsMass << ";";
+    MEResults << LandingGearMass << ";";
+    MEResults << VehicleMass << ";";
+    MEResults << endl;
+    MEResults.close();
 }
 
 MassEstimation::~MassEstimation()
